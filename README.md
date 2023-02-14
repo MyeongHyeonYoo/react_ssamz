@@ -1,27 +1,7 @@
 # **원쌤의 리액트 퀵스타트 with 타입스크립트** 
 
  ## 💡 `React` 
- <!-- <img src="https://img.shields.io/badge/Spring-5.2.11-darkgreen"> <img src="https://img.shields.io/badge/Java-11-purple"> <img src="https://img.shields.io/badge/JSP-2.3-orange"> <img src="https://img.shields.io/badge/Servlet-4.0-skyblue"> <img src="https://img.shields.io/badge/Tomcat-9.0.70-yellow"> <img src="https://img.shields.io/badge/Oracle-11.2.0.2.0-red"> -->
 
-<!--
-
----
-
-### 🧾 프로젝트 소개 
-
----
-
->**ECLIPSE 환경 구축**
-
-> 1. ECLIPSE 설치
-> 2. JDK 설치
-> 3. Oracle 설치 
-> 4. Tomcat 설치
-
-###### Eclipse Marketplace
-> 5. Spring Tools 3 Add-On for Spring Tools 4 [3.9.22.RELEASE] 설치
-> 6. Eclipse Enterprise Java and Web Developer Tools 3.20 설치
- -->
 --- 
 
 ## ◾ **chapter 01**  
@@ -58,6 +38,21 @@
 ◾ 02-22 : 프로미스(promise) 체인 <br>
 ◾ 02-23 : 얕은 복사(Shallow Copy)와 전개 연산자(spread operator) <br>
 ◾ 02-24 : 클래스(class) <br>
+
+#### [타입스크립트]
+
+◾ sample : test <br>
+◾ 02-27 : any[] 타입 [배열] <br>
+◾ 02-28 : 제네릭 타입 <br>
+◾ 02-29 : 타입 별칭(type alias) <br>
+◾ 02-30 : 타입 별칭 안 타입 별칭 <br>
+◾ 02-31 : 유니온(union type) 타입 ( | ) - 단일 <br>
+◾ 02-32 : 유니온(union type) 타입 ( | ) - 복수 <br>
+◾ 02-33 : 인터섹션(intersection type) 타입 ( & ) <br>
+◾ 02-34 : 열거형(enum) <br>
+◾ 02-35 : 인터페이스(interface) <br>
+◾ 02-36 : 인터페이스(interface) 중복 정의 => 병합된 하나의 인터페이스 <br>
+◾ 02-37 : 인터페이스(interface) 상속(extends) <br>
 
 
 
