@@ -173,6 +173,184 @@ https://github.com/dsznajder/vscode-react-javascript-snippets/blob/HEAD/docs/Sni
   https://ko.wikipedia.org/wiki/%EB%B3%B4%EA%B0%84%EB%B2%95 [위키백과]
   ```
 
-  ◾ 03-05 : src/App.tsx 변경 → 함수 추가(addResult) & return 값 활용 <br>
+◾ 03-05 : src/App.tsx 변경 → 함수 추가(addResult) & return 값 활용 <br>
   <img src="img/app.tsx_modify_jsx_braces_function.jpg" width="250" height="130"> <br>
 
+- ### css 적용 ▷ bootstrap 활용 <br>
+◾ 03-06 : src/index.css → css 코드 추가 <br>
+ ```
+// 특정 버전 설치하려면 bootstrap@5.x.x와 같이 버전 작성
+npm install bootstrap
+ ```
+ ```
+// 기존 것 주석 처리하고 마지막에 추가
+hr.dash-style {
+  background-color: #fff;
+  border-top:2px dashed gray;
+}
+ ```
+
+◾ 03-07 : src/main.tsx 변경 → 볼드체 추가(bootstrap.css 파일 import)<br>
+```
+import 'bootstrap/dist/css/bootstrap.css'
+```
+◾ 03-08 : src/App.tsx 변경 → CSS 클래스 지정 <br>
+```
+import React from 'react'
+
+const App = () => {
+  let msg = "World";
+  const addResult = (x: number, y: number) => {
+    return (
+      <div className="card card-body bg-light mb-3">
+        {x} + {y} = {x + y} 
+      </div>
+    );
+  };
+
+  return (
+    <div className="container">
+      <h2>Hello {msg}!</h2>
+      <hr className="dash-style" />
+      {addResult(4, 3)}
+    </div>
+  );
+};
+
+export default App;
+```
+<img src="img/bootstrap_css.jpg" width="350" height="200"> <br>
+<img src="img/chrome_developer_tools.jpg" width="400" height="250"> <br>
+(크롬 개발자 도구 - css 지정된 것 확인) <br>
+
+- ### JSX (자바스크립트 확장)
+```
+Babel REPL(https://babeljs.io/repl)
+// -->> JSX 코드가 자바스크립트 코드로 변환된 것을 확인
+```
+<img src="img/jsx_conversion.jpg" width="700" height="150"> <br>
+
+  - JSX 주의 사항 1 <br>
+    - 요소의 Attribute는 카멜 표기법(camel casing)을 준수 <br>
+  
+  - JSX 주의 사항 2 <br>
+    - '속성명'이 `DOM API` 스펙에 기반 <br>
+    - `JSX`는 HTML처럼 보이지만 실제로는 자바스크립트 코드이기 때문에 **`className` 속성으로 사용**
+    ```
+    // Javascript 코드에서 CSS 클래스 지정
+    document.getElementById("a").className="test";
+    ```
+  - JSX 주의 사항 3 <br>
+    - `보간법( { } : interpolation)`을 사용할 때는 '표현식'을 사용
+    - statement문 작성 불가
+      - if문은 리턴값이 없으므로 사용 불가
+      - for문도 리턴값이 없으므로 { } 내부에 사용 불가
+        - **▶ `삼항 연산자` 사용!** 
+        - **▶ [배열 데이터]의 렌더링을 하려면 배열 객체의 `map( )` 메서드 사용!** 
+    <br>
+
+  - JSX 주의 사항 4 <br>
+  ◾ 03-09 : src/App.tsx 변경 → { } 내에 보간된 HTML '문자열'은 인코딩 된다. <br>
+- `{ }` 내부에 배치한 표현식에 의해 리턴되는 값이 `문자열`인 경우, 모두 `HTML 인코딩` 된다. <br>
+```
+import React from 'react'
+
+const App = () => {
+  // let msg = "World";
+  let msg = "<i>World</i>";
+
+  ···
+```
+```
+// 크롬 개발자 도구 ▶ 콘솔 화면에 입력
+document.querySelector('h2').innerHTML
+```
+<img src="img/html_encoding.jpg" width="250" height="150"> <br>
+<img src="img/html_encoding_console_checked.jpg" width="250" height="50"> <br>
+▶ 브라우저 화면에서 <i></i> 태그의 문자열이 그대로 출력되었는데, 그 이유는 웹 애플리케이션에서 흔히 발생하는 <br> 
+XSS(Cross Site Scripting) 같은 공격에 대비하기 위해서 `<i>`가 `&lt;i&gt;`로 HTML 인코딩됐기 때문이다. <br>
+```
+// XSS(Cross Site Scripting) [위키백과]
+https://ko.wikipedia.org/wiki/%EC%82%AC%EC%9D%B4%ED%8A%B8_%EA%B0%84_%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8C%85
+```
+
+
+<br>
+
+[HTML 마크업 형태의 값을 보간하는 방법]
+
+1. `dangerouslySetInnerHTML` 사용
+
+```
+return (
+    <div className="container">
+      {/* <h2>Hello {msg}!</h2> */}
+      <h2>Hello <span dangerouslySetInnerHTML={{__html: msg }} /></h2>
+      <hr className="dash-style" />
+      {addResult(4, 3)}
+    </div>
+  );
+```
+<img src="img/dangerously_setinnerhtml.jpg" width="150" height="120"> <br>
+
+2. <u>JSX가 XSS 공격에 안전</u>하므로 HTML 문자열 대신 `JSX` 사용
+```
+···
+const App = () => {
+  // let msg = "<i>World</i>";
+  let msg = (<i>World</i>);
+  ···
+
+  return (
+    <div className="container">
+      <h2>Hello {msg}!</h2>
+      ···
+  );
+};
+
+export default App;
+```
+<img src="img/jsx_xss.jpg" width="150" height="120"> <br>
+
+  - JSX 주의 사항 5 <br>
+    - JSX는 <u>단일 루트 요소</u>만 렌더링
+
+  ```
+  // 사용 불가
+  return (
+    <div>Hello</div>
+    <div>World</div>
+  );
+  ```
+  ```
+  // 사용 가능
+  return (
+    <>
+      <div>Hello</div>
+      <div>World</div>
+    </>
+  );
+  ```
+  - JSX 적용 예제 <br>
+  ◾ 03-10 : src/CountryList.tsx → 컴포넌트 작성(arrow 함수형) <br>
+    - 삼항 연산식 사용
+
+◾ 03-11 : src/App.tsx 변경 → CountryList 컴포넌트 추가 <br>
+```
+import React from 'react'
+import CountryList from './CountryList';
+···
+
+return (
+    <div className="container">
+      <h2>Hello {msg}!</h2>
+      <hr className="dash-style" />
+      {addResult(4, 3)}
+      <CountryList />
+    </div>
+  );
+};
+
+export default App;
+```
+<img src="img/countrylist_component.jpg" width="480" height="280"> <br>
