@@ -259,7 +259,7 @@ const App = () => {
   // let msg = "World";
   let msg = "<i>World</i>";
 
-  ···
+  ·····
 ```
 ```
 // 크롬 개발자 도구 ▶ 콘솔 화면에 입력
@@ -295,16 +295,16 @@ return (
 
 2. <u>JSX가 XSS 공격에 안전</u>하므로 HTML 문자열 대신 `JSX` 사용
 ```
-···
+·····
 const App = () => {
   // let msg = "<i>World</i>";
   let msg = (<i>World</i>);
-  ···
+  ·····
 
   return (
     <div className="container">
       <h2>Hello {msg}!</h2>
-      ···
+      ·····
   );
 };
 
@@ -339,7 +339,7 @@ export default App;
 ```
 import React from 'react'
 import CountryList from './CountryList';
-···
+·····
 
 return (
     <div className="container">
@@ -354,3 +354,133 @@ return (
 export default App;
 ```
 <img src="img/countrylist_component.jpg" width="480" height="280"> <br>
+
+- ### 속성 / 속성 적용 예제 <br>
+```
+// Type을 이용하는 경우
+type TestPropsType = {
+  name : string;
+  age : number;
+}
+
+const Test = (props:TestPropsType) => {
+  ·····
+}
+
+// Interface를 이용하는 경우
+interface ITestprops {
+  name : string;
+  age : number;
+}
+
+const Test = (props:ITestProps) => {
+  ·····
+}
+```
+
+◾ 03-12 : src/App.tsx 변경 → App 컴포넌트에 CountryList의 데이터 선언, `속성`을 이용해 CountryList로 전달 <br>
+```
+import React from 'react'
+import CountryList from './CountryList';
+
+export type CountryType = {
+  no: number;
+  country: string;
+  visited: boolean;
+};
+
+const App = () => {
+  let list: Array<CountryType> = [
+    { no: 1, country: "이집트", visited: false },
+    { no: 2, country: "일본", visited: true },
+    { no: 3, country: "피지", visited: false },
+    { no: 4, country: "콜롬비아", visited: false }
+  ];
+
+  ·····
+
+  return (
+    <div className="container">
+      ·····
+      <CountryList countries={list} />
+    </div>
+  );
+};
+
+export default App;
+}
+```
+
+◾ 03-13 : src/CountryList.tsx 변경 → countries 속성으로 (부모)데이터 전달 <br>
+```
+import React from 'react'
+import { CountryType } from './App';
+
+type CountryListPropsType = {
+    countries: Array<CountryType>
+};
+
+const CountryList = (props:CountryListPropsType) => {
+    const list = props.countries;
+    ·····
+
+    return <ul className="list-group">{countries}</ul>
+};
+
+export default CountryList;
+    
+```
+<img src="img/props.jpg" width="760" height="380"> <br>
+(속성 전달 확인) <br>
+
+- ### 컴포넌트 세분화 <br>
+
+◾ 03-14 : src/CountryItem.tsx → CountryList 세분화 <br>
+```
+import React from "react";
+import { CountryType } from "./App";
+
+type CountryItemPropsType = {
+    countryitem: CountryType;
+};
+
+const CountryItem = (props:CountryItemPropsType) => {
+    let item = props.countryitem;
+    return (
+        <li className={item.visited ? "list-group-item active" : "list-group-item"} >
+            {item.country}
+        </li>
+    );
+};
+
+export default CountryItem;
+```
+◾ 03-15 : src/CountryList.tsx 변경 → CountryItem 컴포넌트 렌더링 / 컴포넌트 세분화 <br>
+```
+import React from 'react'
+import { CountryType } from './App';
+import CountryItem from './CountryItem';
+
+·····
+
+const CountryList = (props:CountryListPropsType) => {
+    const list = props.countries;
+    let countries = list.map((item, index) => {
+      return <CountryItem key={item.no} countryitem={item} />
+    });
+
+    return <ul className="list-group">{countries}</ul>
+};
+
+export default CountryList;
+```
+<img src="img/props_array.jpg" width="690" height="330"> <br>
+(속성 전달 확인) <br>
+<br>
+[컴포넌트 세분화의 장점]
+- 컴포넌트 기능이 단순해지기 때문에 에러가 발생할 가능성이 줄어들며 디버깅과 테스트가 쉬워진다.
+- 컴포넌트의 재사용성이 높아진다.
+- 렌더링 성능을 최적화하기가 더 용이하다.
+  - 리액트 컴포넌트는 '컴포넌트 단위'로 렌더링할지 여부를 결정
+  - 컴포넌트 내부의 데이터와 속성이 일치한다면 렌더링을 하지 않도록 컴포넌트를 작성 가능
+  - 컴포넌트를 세분화하면 렌더링 단위를 더 정교하게 지정 가능

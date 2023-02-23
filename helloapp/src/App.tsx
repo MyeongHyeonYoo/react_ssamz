@@ -1,9 +1,21 @@
 import React from 'react'
 import CountryList from './CountryList';
 
+export type CountryType = {
+  no: number;
+  country: string;
+  visited: boolean;
+};
+
 const App = () => {
   // let msg = "World";
   // let msg = "<i>World</i>";
+  let list: Array<CountryType> = [
+    { no: 1, country: "이집트", visited: false },
+    { no: 2, country: "일본", visited: true },
+    { no: 3, country: "피지", visited: false },
+    { no: 4, country: "콜롬비아", visited: false }
+  ];
   let msg = (<i>World</i>);
   const addResult = (x: number, y: number) => {
     return (
@@ -21,7 +33,7 @@ const App = () => {
       {/* <h2>Hello <span dangerouslySetInnerHTML={{__html: msg }} /></h2> */}
       <hr className="dash-style" />
       {addResult(4, 3)}
-      <CountryList />
+      <CountryList countries={list} />
     </div>
   );
 };
