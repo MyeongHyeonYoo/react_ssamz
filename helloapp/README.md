@@ -484,3 +484,40 @@ export default CountryList;
   - 리액트 컴포넌트는 '컴포넌트 단위'로 렌더링할지 여부를 결정
   - 컴포넌트 내부의 데이터와 속성이 일치한다면 렌더링을 하지 않도록 컴포넌트를 작성 가능
   - 컴포넌트를 세분화하면 렌더링 단위를 더 정교하게 지정 가능
+
+◾ 03-16 : src/App.tsx 변경 → 상태 정의, 상태를 속성으로 전달 <br>
+(상태를 변경하면 렌더링과 함께 속성이 전달되면서 화면 전체가 갱신)
+
+```
+import { useState } from 'react'
+import CountryList from './CountryList';
+
+·····
+
+const App = () => {
+  const [msg, setMsg] = useState<string>("World");
+  const [list, setList] = useState<Array<CountryType>>([
+    { no: 1, country: "이집트", visited: false },
+    { no: 2, country: "일본", visited: true },
+    { no: 3, country: "피지", visited: false },
+    { no: 4, country: "콜롬비아", visited: false }
+  ]);
+
+  const addResult = (x: number, y: number) => {
+    return (
+      <div className="card card-body bg-light mb-3">
+        {x} + {y} = {x + y} 
+      </div>
+    );
+  };
+  
+·····
+
+  );
+};
+
+export default App;
+```
+
+<img src="img/usestate.jpg" width="750" height="500"> <br>
+상태를 App(부모)에서 직접 변경해보면 각 자식 컴포넌트로 전달되는 속성이 변경되면서 화면 갱신
