@@ -92,3 +92,4 @@ let d: TupleType = ["hello", 100];
 ◾ 02-34 : 열거형(enum) <br>
 ◾ 02-35 : 인터페이스(interface) <br>
 ◾ 02-36 : 인터페이스(interface) 중복 정의 => 병합된 하나의 인터페이스 <br>
+◾ 02-37 : 인터페이스(interface) 상속(extends) <br>
