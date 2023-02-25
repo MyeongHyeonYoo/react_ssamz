@@ -1,4 +1,4 @@
-# **chapter 03**  
+# **chapter 03**
 
 ## 💡 `React` 
 
@@ -520,4 +520,292 @@ export default App;
 ```
 
 <img src="img/usestate.jpg" width="750" height="500"> <br>
-상태를 App(부모)에서 직접 변경해보면 각 자식 컴포넌트로 전달되는 속성이 변경되면서 화면 갱신
+상태를 App(부모)에서 직접 변경해보면 각 자식 컴포넌트로 전달되는 속성이 변경되면서 화면 갱신 <br>
+
+---
+---
+---
+
+
+# **chapter 04**  
+
+## 💡 `React` 
+
+--- 
+#### [리액트 컴포넌트]
+- ### HTML에서의 스타일 지정
+  - 인라인 스타일 지정 <br>
+    ```
+    <div style="width:200px; height:60px; color:yellow; border:solid 1px gray; background-color:purple;">
+      Hello
+    </div>
+    ```
+  - &lt;style&gt;&lt;&#47;style&gt; 요소 이용 <br>
+    - HTML '페이지 단위'로 스타일을 정의하고, 같은 페이지에서는 스타일을 재사용 할 수 있다. <br>
+  - 외부 CSS 파일 참조 <br>
+    - 스타일 파일을 CSS파일로 작성하고 &lt;link &#47;&gt; 태그로 참조. <br>
+
+<br>
+
+- ### 리액트에서의 스타일 지정
+  - import '[CSS 파일 경로]' 
+    ```
+    // src/main.tsx
+    import './index.css'
+    // npm install bootstrap 후 node_modules/bootstrap/dist/css/bootstrap.css 임포트
+    import 'bootstrap/dist/css/bootstrap.css'
+    ```
+    - 임포트한 CSS파일의 스타일은 모든 컴포넌트에서 사용 가능.
+
+<br>
+
+- ### 리액트 인라인 스타일 지정
+```
+// Javascript 객체로 스타일 정보 정의
+const styles = {
+  color: "yellow", backgroundColor: "purple"
+}
+
+// style 특성을 이용해 스타일 지정
+<div style={styles}>Hello</div>
+```
+
+##### css코드를 자바스크립트 객체로 변환해주는 온라인 도구
+```
+https://transform.tools/css-to-js
+```
+<img src="img/transform_css__javascript_object.jpg" width="700" height="220"> <br>
+
+<br>
+
+◾ 04-01 : src/styles.ts → 스타일 정보를 지정하는 소스 코드 파일 추가(인라인 스타일 적용) <br>
+```
+const styles = {
+    listItemStyle : {
+        fontStyle: "italic", 
+        textDecoration: "underline"
+    },
+    dashStyle: {
+        backgroundColor: "#fff",
+        borderTop: "2px dashed gray"
+    }
+}
+
+export default styles;
+```
+
+◾ 04-02 : src/App.tsx 변경 → App 컴포넌트에 styles(CSS) 적용  <br>
+```
+·····
+import styles from './styles'
+·····
+
+return (
+    <div className="container">
+      <h2>Hello {msg}!</h2>
+      <hr style={styles.dashStyle} />
+      {addResult(4, 3)}
+      <CountryList countries={list} />
+    </div>
+  );
+};
+
+export default App;
+```
+
+◾ 04-03 : src/CountryItem.tsx 변경 → CountryItem컴포넌트에 styles(CSS) 적용 <br>
+```
+·····
+import styles from './styles'
+
+·····
+
+const CountryItem = (props:CountryItemPropsType) => {
+    let item = props.countryitem;
+    return (
+        <li style={styles.listItemStyle}
+            className={item.visited ? "list-group-item active" : "list-group-item"} >
+            {item.country}
+        </li>
+    );
+};
+
+export default CountryItem;
+```
+
+<img src="img/react_style_css.jpg" width="670" height="280"> <br>
+(&lt;hr&gt; 요소에 인라인 스타일이 지정된 결과)
+
+<br>
+
+- ### CSS 모듈
+```
+import styleApp from './App.module.css'
+```
+
+◾ 04-04 : src/App.module.css → CSS 모듈 추가 <br>
+```
+.test {
+    color: blue;
+    background-color: bisque;
+}
+```
+
+◾ 04-05 : src/App.tsx → App 컴포넌트 변경(모듈 적용) <br>
+```
+·····
+import AppCssModule from './App.module.css'
+·····
+
+ return (
+    <div className="container">
+      <h2 className={AppCssModule.test}>Hello {msg}!</h2>
+      <hr style={styles.dashStyle} />
+      {addResult(4, 3)}
+      <CountryList countries={list} />
+    </div>
+  );
+};
+
+export default App;
+```
+<img src="img/css_class_bind.jpg" width="670" height="300"> <br>
+
+- ### styled-components
+  ▶ ES6의 태그된 템플릿 리터럴(tagged template literal) 문법을 사용해 컴포넌트에 동적인 CSS를 사용할 수 있게 하는 라이브러리
+  - ES6의 태그된 템플릿 리터럴(tagged template literal)
+    ```
+    const getPercent = function(str, ...values) {
+      var result = "";
+      for (var i = 0; i < str.length; i++) {
+        result += str[i];
+        if (values[i])
+          result += Math.round(Values[i] * 100) + "%";
+      }
+      return result;
+      
+      let v1 = 0.222;
+      let v2 = 0.78999;
+      let r2 = getPercent `첫 번째 값은 ${v1}이고, 두 번째 값은 ${v2}이다.`;
+      console.log(r2);
+    }
+    ```
+    ```
+    // 템플릿 리터럴(Template literals) 참조
+    https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Template_literals
+    ```
+```
+// styled-components를 사용하기 위해 패키지 설치
+npm install styled-components @types/styled-components
+
+// npm install styled-components → 이 명령어로만 설치 가능
+// @types/styled-components → 오류 시 이 명령어 추가하여 설치(버전 안 맞아서 생기는 문제)
+```
+
+◾ 04-06 : src/Footer.tsx → styled-components 사용 <br>
+```
+import React from 'react'
+import styled from 'styled-components'
+
+type FooterPropsType = {
+    theme: string;
+};
+
+const Footer = (p1: FooterPropsType) => {
+    const FooterBox = styled.div`
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 1rem;
+        background-color: ${(p2) => (p2.theme === "basic" ? "skyblue" : "yellow")};
+        text-align: center;
+    `;
+    return <FooterBox theme={p1.theme}>React styled-components Test</FooterBox>
+};
+
+export default Footer;
+```
+(스타일이 적용된 div를 리턴하는 컴포넌트 ▷ FooterBox)
+
+◾ 04-07 : src/App.tsx 변경 → Footer 사용 <br>
+```
+·····
+import Footer from './Footer'
+·····
+
+  const [theme, setTheme] = useState<string>("basic");
+
+  ·····
+  return (
+    <div className="container">
+      <h2 className={AppCssModule.test}>Hello {msg}!</h2>
+      <hr style={styles.dashStyle} />
+      {addResult(4, 3)}
+      <CountryList countries={list} />
+      <Footer theme={theme} />
+    </div>
+  );
+};
+
+export default App;
+```
+<img src="img/styled_components_checked.jpg" width="800" height="450"> <br>
+<img src="img/styled_components_false.jpg" width="420" height="420"> <br>
+
+◾ 04-08 : src/Buttons.tsx → styled-components로 작성한 컴포넌트 스타일 확장 <br>
+```
+// styled-components로 작성한 컴포넌트 A
+const A = styled.div`·····`;
+// A 컴포넌트를 확장한 컴포넌트 B
+const B = styled(A)`·····`;
+```
+
+```
+import styled from 'styled-components'
+
+const BasicButton = styled.button`
+    background-color: purple;
+    color: yellow;
+    padding 5px 10px;
+    margin: 5px;
+`;
+const UnderLineButton = styled(BasicButton)`
+    text-decoration: underline;
+`;
+const ItalicButton = styled(BasicButton)`
+    font-style: italic;
+`;
+const WhiteUnderLineButton = styled(UnderLineButton)`
+    color: white;
+`;
+
+export { BasicButton, ItalicButton, UnderLineButton, WhiteUnderLineButton };
+```
+
+◾ 04-09 : src/App.tsx 변경 → Buttons 사용 <br>
+```
+·····
+import Footer from './Footer'
+import { BasicButton, ItalicButton, UnderLineButton, WhiteUnderLineButton } from './Buttons'
+// import { 
+//   BasicButton, ItalicButton, 
+//   UnderLineButton, WhiteUnderLineButton 
+// } from './Buttons'
+·····
+
+return (
+    <div className="container">
+      ·····
+      <BasicButton>기본</BasicButton>
+      <ItalicButton>이탤릭</ItalicButton>
+      <UnderLineButton>언더라인</UnderLineButton>
+      <WhiteUnderLineButton>화이트 언더라인</WhiteUnderLineButton>
+      <Footer theme={theme} />
+    </div>
+  );
+};
+
+export default App;
+```
+<img src="img/style_extending.jpg" width="800" height="450"> <br>

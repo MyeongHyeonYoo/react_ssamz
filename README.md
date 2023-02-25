@@ -54,7 +54,7 @@
 ◾ 02-36 : 인터페이스(interface) 중복 정의 => 병합된 하나의 인터페이스 <br>
 ◾ 02-37 : 인터페이스(interface) 상속(extends) <br>
 
-## ◾ **chapter 03**  
+## ◾ **chapter 03**  - <i>helloapp</i>
 
 #### [리액트 시작하기 & Vite]
 ◾ 03-01 : src/App.tsx → 코드 조각 작성(함수 컴포넌트) <br>
@@ -74,4 +74,15 @@
 ◾ 03-15 : src/CountryList.tsx 변경 → CountryItem 컴포넌트 렌더링 / 컴포넌트 세분화 <br>
 ◾ 03-16 : src/App.tsx 변경 → 상태 정의, 상태를 속성으로 전달 <br>
 
+## ◾ **chapter 04**  - <i>helloapp</i>
 
+#### [리액트 컴포넌트]
+◾ 04-01 : src/styles.ts → 스타일 정보를 지정하는 소스 코드 파일 추가(인라인 스타일 적용) <br>
+◾ 04-02 : src/App.tsx 변경 → App 컴포넌트에 styles(CSS) 적용  <br>
+◾ 04-03 : src/CountryItem.tsx 변경 → CountryItem컴포넌트에 styles(CSS) 적용 <br>
+◾ 04-04 : src/App.module.css → CSS 모듈 추가 <br>
+◾ 04-05 : src/App.tsx → App 컴포넌트 변경(모듈 적용) <br>
+◾ 04-06 : src/Footer.tsx → styled-components 사용 <br>
+◾ 04-07 : src/App.tsx 변경 → Footer 사용 <br>
+◾ 04-08 : src/Buttons.tsx → styled-components로 작성한 컴포넌트 스타일 확장 <br>
+◾ 04-09 : src/App.tsx 변경 → Buttons 사용 <br>
