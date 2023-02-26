@@ -86,3 +86,13 @@
 ◾ 04-07 : src/App.tsx 변경 → Footer 사용 <br>
 ◾ 04-08 : src/Buttons.tsx → styled-components로 작성한 컴포넌트 스타일 확장 <br>
 ◾ 04-09 : src/App.tsx 변경 → Buttons 사용 <br>
+
+## ◾ **chapter 04**  - <i>proptypes-test</i>
+
+#### [리액트 컴포넌트]
+◾ 04-10 : src/Calc.tsx → 타입스크립트로 정적 타입의 속성을 전달 <br>
+◾ 04-11 : src/App.tsx → Calc 사용 <br>
+◾ 04-12 : src/Calc.tsx 변경 → propTypes 적용, propTypes 정적 멤버 추가 <br>
+◾ 04-13 : src/App.tsx 변경 → state 값 변경하여 확인 <br>
+◾ 04-14 : src/Calc.tsx 변경 → calcChecker 함수에 추가(사용자 정의 유효성 검증 추가) <br>
+◾ 04-15 : src/App.tsx 변경 → state 값 변경하여 확인 <br>
