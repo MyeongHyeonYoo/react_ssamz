@@ -56,11 +56,23 @@ const calcChecker = (props: any, propName: string, componentName: string) => {
     };
 };
 
-Calc.propTypes = {
-    x: PropTypes.number.isRequired,
-    // y: PropTypes.number.isRequired,
+// Calc.propTypes = {
+//     x: PropTypes.number.isRequired,
+//     // y: PropTypes.number.isRequired,
+//     y: calcChecker,
+//     oper: calcChecker
+// };
+
+Calc.proptypes = {
+    x: PropTypes.number,
     y: calcChecker,
     oper: calcChecker
 };
+
+Calc.defaultProps = {
+    x: 100,
+    y: 20,
+    oper: "+"
+}
 
 export default Calc;

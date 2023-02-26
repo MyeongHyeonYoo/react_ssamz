@@ -6,14 +6,12 @@
 
 ## ◾ **chapter 01**  
 #### [example]
-
 ◾ sample1 : Hello World!!! <br>
 ◾ sample2 : App 컴포넌트의 자식 컴포넌트 - Title, TodoList <br>
 
 ## ◾ **chapter 02**  
 
 #### [ES6 문법]
-
 ◾ 02-01 : Hello John!! <br>
 ◾ 02-02 : let 키워드 <br>
 ◾ 02-03 : const 키워드 - 속성 변경 허용 <br>
@@ -40,7 +38,6 @@
 ◾ 02-24 : 클래스(class) <br>
 
 #### [타입스크립트]
-
 ◾ sample : test <br>
 ◾ 02-27 : any[] 타입 [배열] <br>
 ◾ 02-28 : 제네릭 타입 <br>
@@ -96,3 +93,12 @@
 ◾ 04-13 : src/App.tsx 변경 → state 값 변경하여 확인 <br>
 ◾ 04-14 : src/Calc.tsx 변경 → calcChecker 함수에 추가(사용자 정의 유효성 검증 추가) <br>
 ◾ 04-15 : src/App.tsx 변경 → state 값 변경하여 확인 <br>
+◾ 04-16 : src/Calc.tsx 변경 → 속성의 기본값 설정(default props) <br>
+◾ 04-17 : src/App.tsx 변경 → y와 oper 속성 사용하지 않도록 코드 변경(x속성만 전달) <br>
+
+## ◾ **chapter 04**  - <i>events-test</i>
+
+#### [리액트 컴포넌트]
+◾ 04-18 : src/App1.tsx → 이벤트 적용 예제 작성 <br>
+◾ 04-19 : src/main.tsx → App1 import <br>
+◾ 04-20 : src/App1.tsx 변경 → 같은 state를 여러 번 변경하면 생기는 문제점 확인 <br>

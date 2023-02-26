@@ -251,3 +251,48 @@ export default App
 <img src="img/props_warning_y_2.jpg" width="800" height="200"> <br>
 <img src="img/props_warning_y_3.jpg" width="800" height="200"> <br>
 <img src="img/valid_y.jpg" width="800" height="200"> <br>
+
+
+- 속성의 기본값 지정(default 값 지정)
+
+◾ 04-16 : src/Calc.tsx 변경 → 속성의 기본값 설정(default props) <br>
+(속성의 기본값이 설정되면 isRequired를 사용하지 않아도 된다.)
+```
+·····
+
+Calc.proptypes = {
+    x: PropTypes.number,
+    y: calcChecker,
+    oper: calcChecker
+};
+
+Calc.defaultProps = {
+    x: 100,
+    y: 20,
+    oper: "+"
+}
+
+export default Calc;
+```
+
+◾ 04-17 : src/App.tsx 변경 → y와 oper 속성 사용하지 않도록 코드 변경(x속성만 전달) <br>
+```
+import { useState } from 'react'
+import Calc from './Calc'
+
+const App = () => {
+  const [x, setX] = useState<number>(100);
+  // const [y, setY] = useState<number>(200);
+  // const [oper, setOper] = useState<string>("&");
+
+  return (
+    <div>
+      <Calc x={x} />
+    </div>
+  );
+};
+
+export default App
+```
+<img src="img/default_props.jpg" width="450" height="200"> <br>
+x는 지정된 값, y와 oper의 값은 기본값(default value)이 전달된 것을 확인할 수 있다. <br>
