@@ -102,3 +102,27 @@
 ◾ 04-18 : src/App1.tsx → 이벤트 적용 예제 작성 <br>
 ◾ 04-19 : src/main.tsx → App1 import <br>
 ◾ 04-20 : src/App1.tsx 변경 → 같은 state를 여러 번 변경하면 생기는 문제점 확인 <br>
+◾ 04-21 : src/App2.tsx → 제어 컴포넌트 확인 <br>
+◾ 04-22 : src/main.tsx 변경 → App2 사용 <br>
+◾ 04-23 : src/App2.tsx 변경 → 이벤트 핸들러 사용 <br>
+◾ 04-24 : src/App3.tsx → HTML DOM 요소에 직접 접근(defaultValue, ref 바인딩) <br>
+◾ 04-25 : src/main.tsx → App3 사용 <br>
+
+## ◾ **chapter 04**  - <i>immutables-test</i>
+
+#### [리액트 컴포넌트]
+◾ 04-26 : src/main.tsx → 복잡한 트리 구조 객체를 정의 <br>
+
+## ◾ **chapter 04**  - <i>todolist-app</i>
+
+#### [리액트 컴포넌트]
+◾ 04-27 : src/AppContainer.tsx → 상태 정의, 메서드(상태 변경 메서드) 정의 / 상태를 변경할 때 immer를 통한 불변성 사용 <br>
+◾ 04-28 : src/components/App.tsx → AppContainer의 Type import 및 속성 타입 정의, InputTodo, TodoList 컴포넌트 정보를 속성으로 전달 <br>
+◾ 04-29 : src/components/InputTodo.tsx → 속성으로 addTodo 메서드 전달 받아 속성의 타입 정의, <br>
+사용자의 입력 값을 받아내기 위해 자체적인 todo 상태 보유(제어 컴포넌트 구조 구현) <br>
+◾ 04-30 : src/components/TodoList.tsx → 속성으로 전달 받은 todoList 배열 데이터를 이용해 TodoListItem 컴포넌트를 반복 렌더링 <br>
+속성으로 전달받은 deleteTodo, toggleDone 메서드를 다시 TodoListItem 컴포넌트로 전달 <br>
+◾ 04-31 : src/components/TodoListItem.tsx → todoList의 아이템 한 건(todoItem)을 속성으로 전달받아 렌더링. <br>
+삭제 버튼, todo 항목 클릭 시 이벤트 발생하면 속성으로 전달 받은 deleteTodo, toggleDone 메서드 호출 <br>
+◾ 04-32 : src/index.css → 기본 스타일 지정 <br>
+◾ 04-33 : src/main.tsx → AppContainer Import <br>

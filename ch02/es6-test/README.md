@@ -6,7 +6,7 @@
 
 #### [ES6 문법]
 - package.json 
-```
+```javascript
 "scripts": {
     "build": "babel src -d build"
   },
@@ -78,4 +78,4 @@
 ◾ 02-24 : 클래스(class) <br>
 - extends 키워드로 상속 구현 <br>
 - constructor 키워드로 생성자 생성 <br>
-<img src="img/02-24.jpg" width="400" height="100"> <br><br>
+<img src="img/02-24.jpg" width="450" height="100"> <br><br>

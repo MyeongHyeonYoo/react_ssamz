@@ -12,8 +12,7 @@
 
 **▶ [타입스크립트 + propTypes]를 사용하면 엄격한 속성 유효성 검증 가능**
 
-<br>
-새로운 프로젝트 생성
+<br> ♧ 새로운 프로젝트 생성 <br>
 
 ```
 cd ..
@@ -24,7 +23,7 @@ npm install
 (src/App.css 파일 삭제)
 
 ◾ 04-10 : src/Calc.tsx → 타입스크립트로 정적 타입의 속성을 전달 <br>
-```
+```javascript
 import React from 'react'
 
 type CalcPropsTypes = {
@@ -70,7 +69,7 @@ export default Calc;
 ```
 
 ◾ 04-11 : src/App.tsx → Calc 사용 <br>
-```
+```javascript
 import { useState } from 'react'
 import Calc from './Calc'
 
@@ -104,7 +103,7 @@ export default App
 npm install prop-types
 ```
 
-```
+```javascript
 import React from 'react'
 import PropTypes from 'prop-types'
 ·····
@@ -133,7 +132,7 @@ export default Calc;
 (사용자 정의 유효성 검증 - 함수 정의 사용)
 
 ◾ 04-13 : src/App.tsx 변경 → state 값 변경하여 확인 (oper -> "&") <br>
-```
+```javascript
 import { useState } from 'react'
 import Calc from './Calc'
 
@@ -155,7 +154,7 @@ export default App
 속성을 필수로 전달 할 때 <br>
 > - isRequired로 전달 <br>
 > → PropTypes는 여러 가지 타입에 대한 기본적인 설정을 할 수 있도록 number, string, boolean과 같은 타입 정보를 제공 <br>
-```
+```javascript
 Calc.propTypes = {
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired,
@@ -189,7 +188,7 @@ Calc.propTypes = {
 <br>
 → 복잡한 객체 속성 검증
 
-```
+```javascript
 PropTypes.shape({
     name: PropTypes.string.isRequired,
     age: PropTypes.number
@@ -200,7 +199,7 @@ PropTypes.shape({
 <br>
 
 ◾ 04-14 : src/Calc.tsx 변경 → calcChecker 함수에 추가(사용자 정의 유효성 검증 추가) <br>
-```
+```javascript
 ·····
 
 const calcChecker = (props: any, propName: string, componentName: string) => {
@@ -227,7 +226,7 @@ export default Calc;
 
 ◾ 04-15 : src/App.tsx 변경 → state 값 변경하여 확인[y -> (0 < y < 100) && (y % 2 == 0)] <br>
 (y가 올바르지 않은 값이 전달되도록 변경)
-```
+```javascript
 import { useState } from 'react'
 import Calc from './Calc'
 
@@ -257,7 +256,7 @@ export default App
 
 ◾ 04-16 : src/Calc.tsx 변경 → 속성의 기본값 설정(default props) <br>
 (속성의 기본값이 설정되면 isRequired를 사용하지 않아도 된다.)
-```
+```javascript
 ·····
 
 Calc.proptypes = {
@@ -276,7 +275,7 @@ export default Calc;
 ```
 
 ◾ 04-17 : src/App.tsx 변경 → y와 oper 속성 사용하지 않도록 코드 변경(x속성만 전달) <br>
-```
+```javascript
 import { useState } from 'react'
 import Calc from './Calc'
 

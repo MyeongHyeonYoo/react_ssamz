@@ -13,7 +13,7 @@ https://typescript-kr.github.io/pages/compiler-options.html
 ```
 
 ◾ sample : test <br>
-```
+```javascript
 npx tsc
 
 node build/sample.js
@@ -29,7 +29,7 @@ https://www.typescriptlang.org/ko/play
 <img src="img/type_error.jpg" width="760" height="320"> <br>
 
 - type alias
-```
+```javascript
 type TestType {
   id: number,
   age: number,
@@ -59,7 +59,7 @@ let obj : TestType = {
 - 읽기 전용 속성 : readonly <br>
 - 튜플 타입 <br>
 
-```
+```javascript
 // string 타입에 대한 별칭 부여
 type MyType = string;
 let a: MyType = "Hello";
@@ -71,7 +71,7 @@ let b: MyType2 = { name: "홍길동", age: 20 };
 // 선택적 속성과 읽기 전용 속성
 type MyType3 = {
     name: string;
-    age?:number;
+    age?: number;
     readonly email: string;
 };
 

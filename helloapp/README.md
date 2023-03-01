@@ -39,7 +39,7 @@
     ```
 
 - 'npx create-react-app [프로젝트명]' 오류 <br>
-  ```
+  ```javascript
   "You are running 'create-react-app' x.x.x, which is behind the latest release
   (x.x.x). We no longer support global installation of Create React App."
   ```
@@ -178,11 +178,11 @@ https://github.com/dsznajder/vscode-react-javascript-snippets/blob/HEAD/docs/Sni
 
 - ### css 적용 ▷ bootstrap 활용 <br>
 ◾ 03-06 : src/index.css → css 코드 추가 <br>
- ```
+ ```javascript
 // 특정 버전 설치하려면 bootstrap@5.x.x와 같이 버전 작성
 npm install bootstrap
  ```
- ```
+ ```javascript
 // 기존 것 주석 처리하고 마지막에 추가
 hr.dash-style {
   background-color: #fff;
@@ -191,11 +191,11 @@ hr.dash-style {
  ```
 
 ◾ 03-07 : src/main.tsx 변경 → 볼드체 추가(bootstrap.css 파일 import)<br>
-```
+```javascript
 import 'bootstrap/dist/css/bootstrap.css'
 ```
 ◾ 03-08 : src/App.tsx 변경 → CSS 클래스 지정 <br>
-```
+```javascript
 import React from 'react'
 
 const App = () => {
@@ -236,7 +236,7 @@ Babel REPL(https://babeljs.io/repl)
   - JSX 주의 사항 2 <br>
     - '속성명'이 `DOM API` 스펙에 기반 <br>
     - `JSX`는 HTML처럼 보이지만 실제로는 자바스크립트 코드이기 때문에 **`className` 속성으로 사용**
-    ```
+    ```javascript
     // Javascript 코드에서 CSS 클래스 지정
     document.getElementById("a").className="test";
     ```
@@ -252,7 +252,7 @@ Babel REPL(https://babeljs.io/repl)
   - JSX 주의 사항 4 <br>
   ◾ 03-09 : src/App.tsx 변경 → { } 내에 보간된 HTML '문자열'은 인코딩 된다. <br>
 - `{ }` 내부에 배치한 표현식에 의해 리턴되는 값이 `문자열`인 경우, 모두 `HTML 인코딩` 된다. <br>
-```
+```javascript
 import React from 'react'
 
 const App = () => {
@@ -281,7 +281,7 @@ https://ko.wikipedia.org/wiki/%EC%82%AC%EC%9D%B4%ED%8A%B8_%EA%B0%84_%EC%8A%A4%ED
 
 1. `dangerouslySetInnerHTML` 사용
 
-```
+```javascript
 return (
     <div className="container">
       {/* <h2>Hello {msg}!</h2> */}
@@ -294,17 +294,21 @@ return (
 <img src="img/dangerously_setinnerhtml.jpg" width="150" height="120"> <br>
 
 2. <u>JSX가 XSS 공격에 안전</u>하므로 HTML 문자열 대신 `JSX` 사용
-```
+```javascript
 ·····
+
 const App = () => {
   // let msg = "<i>World</i>";
   let msg = (<i>World</i>);
+
   ·····
 
   return (
     <div className="container">
       <h2>Hello {msg}!</h2>
+
       ·····
+      
   );
 };
 
@@ -315,14 +319,14 @@ export default App;
   - JSX 주의 사항 5 <br>
     - JSX는 <u>단일 루트 요소</u>만 렌더링
 
-  ```
+  ```javascript
   // 사용 불가
   return (
     <div>Hello</div>
     <div>World</div>
   );
   ```
-  ```
+  ```javascript
   // 사용 가능
   return (
     <>
@@ -336,7 +340,7 @@ export default App;
     - 삼항 연산식 사용
 
 ◾ 03-11 : src/App.tsx 변경 → CountryList 컴포넌트 추가 <br>
-```
+```javascript
 import React from 'react'
 import CountryList from './CountryList';
 ·····
@@ -356,14 +360,14 @@ export default App;
 <img src="img/countrylist_component.jpg" width="480" height="280"> <br>
 
 - ### 속성 / 속성 적용 예제 <br>
-```
+```javascript
 // Type을 이용하는 경우
 type TestPropsType = {
   name : string;
   age : number;
 }
 
-const Test = (props:TestPropsType) => {
+const Test = (props: TestPropsType) => {
   ·····
 }
 
@@ -373,13 +377,13 @@ interface ITestprops {
   age : number;
 }
 
-const Test = (props:ITestProps) => {
+const Test = (props: ITestProps) => {
   ·····
 }
 ```
 
 ◾ 03-12 : src/App.tsx 변경 → App 컴포넌트에 CountryList의 데이터 선언, `속성`을 이용해 CountryList로 전달 <br>
-```
+```javascript
 import React from 'react'
 import CountryList from './CountryList';
 
@@ -412,7 +416,7 @@ export default App;
 ```
 
 ◾ 03-13 : src/CountryList.tsx 변경 → countries 속성으로 (부모)데이터 전달 <br>
-```
+```javascript
 import React from 'react'
 import { CountryType } from './App';
 
@@ -436,7 +440,7 @@ export default CountryList;
 - ### 컴포넌트 세분화 <br>
 
 ◾ 03-14 : src/CountryItem.tsx → CountryList 세분화 <br>
-```
+```javascript
 import React from "react";
 import { CountryType } from "./App";
 
@@ -455,8 +459,9 @@ const CountryItem = (props:CountryItemPropsType) => {
 
 export default CountryItem;
 ```
+
 ◾ 03-15 : src/CountryList.tsx 변경 → CountryItem 컴포넌트 렌더링 / 컴포넌트 세분화 <br>
-```
+```javascript
 import React from 'react'
 import { CountryType } from './App';
 import CountryItem from './CountryItem';
@@ -488,7 +493,7 @@ export default CountryList;
 ◾ 03-16 : src/App.tsx 변경 → 상태 정의, 상태를 속성으로 전달 <br>
 (상태를 변경하면 렌더링과 함께 속성이 전달되면서 화면 전체가 갱신)
 
-```
+```javascript
 import { useState } from 'react'
 import CountryList from './CountryList';
 
@@ -535,7 +540,7 @@ export default App;
 #### [리액트 컴포넌트]
 - ### HTML에서의 스타일 지정
   - 인라인 스타일 지정 <br>
-    ```
+    ```javascript
     <div style="width:200px; height:60px; color:yellow; border:solid 1px gray; background-color:purple;">
       Hello
     </div>
@@ -549,7 +554,7 @@ export default App;
 
 - ### 리액트에서의 스타일 지정
   - import '[CSS 파일 경로]' 
-    ```
+    ```javascript
     // src/main.tsx
     import './index.css'
     // npm install bootstrap 후 node_modules/bootstrap/dist/css/bootstrap.css 임포트
@@ -560,7 +565,7 @@ export default App;
 <br>
 
 - ### 리액트 인라인 스타일 지정
-```
+```javascript
 // Javascript 객체로 스타일 정보 정의
 const styles = {
   color: "yellow", backgroundColor: "purple"
@@ -579,7 +584,7 @@ https://transform.tools/css-to-js
 <br>
 
 ◾ 04-01 : src/styles.ts → 스타일 정보를 지정하는 소스 코드 파일 추가(인라인 스타일 적용) <br>
-```
+```javascript
 const styles = {
     listItemStyle : {
         fontStyle: "italic", 
@@ -595,7 +600,7 @@ export default styles;
 ```
 
 ◾ 04-02 : src/App.tsx 변경 → App 컴포넌트에 styles(CSS) 적용  <br>
-```
+```javascript
 ·····
 import styles from './styles'
 ·····
@@ -614,7 +619,7 @@ export default App;
 ```
 
 ◾ 04-03 : src/CountryItem.tsx 변경 → CountryItem컴포넌트에 styles(CSS) 적용 <br>
-```
+```javascript
 ·····
 import styles from './styles'
 
@@ -639,12 +644,12 @@ export default CountryItem;
 <br>
 
 - ### CSS 모듈
-```
+```javascript
 import styleApp from './App.module.css'
 ```
 
 ◾ 04-04 : src/App.module.css → CSS 모듈 추가 <br>
-```
+```javascript
 .test {
     color: blue;
     background-color: bisque;
@@ -652,7 +657,7 @@ import styleApp from './App.module.css'
 ```
 
 ◾ 04-05 : src/App.tsx → App 컴포넌트 변경(모듈 적용) <br>
-```
+```javascript
 ·····
 import AppCssModule from './App.module.css'
 ·····
@@ -674,7 +679,7 @@ export default App;
 - ### styled-components
   ▶ ES6의 태그된 템플릿 리터럴(tagged template literal) 문법을 사용해 컴포넌트에 동적인 CSS를 사용할 수 있게 하는 라이브러리
   - ES6의 태그된 템플릿 리터럴(tagged template literal)
-    ```
+    ```javascript
     const getPercent = function(str, ...values) {
       var result = "";
       for (var i = 0; i < str.length; i++) {
@@ -694,7 +699,7 @@ export default App;
     // 템플릿 리터럴(Template literals) 참조
     https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Template_literals
     ```
-```
+```javascript
 // styled-components를 사용하기 위해 패키지 설치
 npm install styled-components @types/styled-components
 
@@ -703,7 +708,7 @@ npm install styled-components @types/styled-components
 ```
 
 ◾ 04-06 : src/Footer.tsx → styled-components 사용 <br>
-```
+```javascript
 import React from 'react'
 import styled from 'styled-components'
 
@@ -729,14 +734,16 @@ export default Footer;
 (스타일이 적용된 div를 리턴하는 컴포넌트 ▷ FooterBox)
 
 ◾ 04-07 : src/App.tsx 변경 → Footer 사용 <br>
-```
+```javascript
 ·····
 import Footer from './Footer'
+
 ·····
 
   const [theme, setTheme] = useState<string>("basic");
 
   ·····
+
   return (
     <div className="container">
       <h2 className={AppCssModule.test}>Hello {msg}!</h2>
@@ -754,14 +761,14 @@ export default App;
 <img src="img/styled_components_false.jpg" width="420" height="420"> <br>
 
 ◾ 04-08 : src/Buttons.tsx → styled-components로 작성한 컴포넌트 스타일 확장 <br>
-```
+```javascript
 // styled-components로 작성한 컴포넌트 A
 const A = styled.div`·····`;
 // A 컴포넌트를 확장한 컴포넌트 B
 const B = styled(A)`·····`;
 ```
 
-```
+```javascript
 import styled from 'styled-components'
 
 const BasicButton = styled.button`
@@ -784,7 +791,7 @@ export { BasicButton, ItalicButton, UnderLineButton, WhiteUnderLineButton };
 ```
 
 ◾ 04-09 : src/App.tsx 변경 → Buttons 사용 <br>
-```
+```javascript
 ·····
 import Footer from './Footer'
 import { BasicButton, ItalicButton, UnderLineButton, WhiteUnderLineButton } from './Buttons'
