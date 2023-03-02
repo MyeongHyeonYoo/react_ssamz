@@ -126,3 +126,10 @@
 삭제 버튼, todo 항목 클릭 시 이벤트 발생하면 속성으로 전달 받은 deleteTodo, toggleDone 메서드 호출 <br>
 ◾ 04-32 : src/index.css → 기본 스타일 지정 <br>
 ◾ 04-33 : src/main.tsx → AppContainer Import <br>
+
+## ◾ **chapter 05**  - <i>clock-app</i>
+
+#### [리액트 클래스 컴포넌트]
+◾ 05-01 : src/Clock.tsx → date-and-time 라이브러리 사용, componentDidMount 생명주기 메서드 사용 <br>
+◾ 05-02 : src/App.tsx → Clock 컴포넌트에 formatString 속성을 전달 <br>
+◾ 05-03 : src/index.css → 스타일 지정 <br> 
