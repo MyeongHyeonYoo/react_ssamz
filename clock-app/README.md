@@ -341,7 +341,7 @@ getSnapshotBeforeUpdate(prevProps, prevState) {
     - 이 메서드가 실행되는 시점은 브라우저 DOM까지 업데이트가 완료된 후이다. <br>
     - 이 메서드는 컴포넌트가 업데이트되고 <u>DOM을 변경하고자 할 때</u> 사용 <br>
     ▷ 현재의 속성(this.props)과 상태(this.state)를 이전의 속성, 상태와 비교하여 차이가 있다면 <u>외부 API를 요청</u>하는 등의 작업을 수행하도록 활용할 수 있다. <br>
-        - getSnapshotBeforeUpdate()메서드에서 린턴한 값은 이 메서드의 세 번째 인자인 snapshot으로 전달되므로, getSnapshotBeforeUpdate()메서드와 componentDidUpdate()메서드는 함께 사용되는 경우가 많다. <br>
+        - getSnapshotBeforeUpdate()메서드에서 리턴한 값은 이 메서드의 세 번째 인자인 snapshot으로 전달되므로, getSnapshotBeforeUpdate()메서드와 componentDidUpdate()메서드는 함께 사용되는 경우가 많다. <br>
 ```javascript
 componentDidUpdate(prevProps, prevState, snapshot) {
 
@@ -354,3 +354,102 @@ componentDidUpdate(prevProps, prevState, snapshot) {
     - 이 메서드는 컴포넌트가 애플리케이션의 컴포넌트 트리에서 삭제되기 직전에 실행되고, 주로 componentDidMount 생명주기 메서드와 짝을 이루어 사용 <br>
         - ex) 웹소켓을 이용해 서버에 연결하는 경우, 컴포넌트가 마운트될 때 componentDidMount 메서드에서 외부 서버나 리소스에 연결하면 컴포넌트가 언마운트될 때는 componentWillUnmount 메서드에서 서버와의 연결을 해제 한다. <br>
             - 외부 리소스에 연결한 경우에는 반드시 componentWillUnmount에서 깨끗하게 연결을 해제해야 한다. 그렇지 않으면 메모리 누수(memory leak)가 발생할 수 있고, 불필요한 외부 리소스 연결이 남아있게 된다.<br>
+
+<br>
+
+♣ 생명주기 메서드 예제 1 <br>
+
+◾ 05-04 : src/App.tsx 변경 → componentDidMount, componentWillUnmount 생명주기 메서드를 이용해 리소스를 연결하고 해제 <br> 
+```javascript
+import { Component } from 'react'
+import Clock from './Clock'
+
+type State = {
+  formatString: string;
+  clockVisible: boolean; 
+};
+
+export default class App extends Component<{}, State> {
+  state = {
+    // HH:mm:ss
+    // H시 m분 s초
+    formatString: "HH:mm:ss",
+    clockVisible: false, // 상태 추가
+    // -> 이 값이 true인지 false인지에 따라 Clock 컴포넌트가 마운트/언마운트되도록 작성
+  };
+
+  changeFormat = (format: string) => {
+    this.setState({ formatString: format });
+  };
+
+  render() {
+    return (
+      <div className="boxStyle">
+        <h2>간단한 디지털 시계</h2>
+        <button onClick={() => this.setState({ clockVisible: !this.state.clockVisible })}>시계 토글하기</button>
+        <hr />
+        {this.state.clockVisible ? <Clock formatString={this.state.formatString} /> : ""}
+        
+      </div>
+    );
+  }
+}
+```
+
+◾ 05-05 : src/Clock.tsx 변경 → componentDidMount 생명주기 메서드에 추가(1초 간격으로 시간이 바뀔 때마다 콘솔에 '## tick!'을 출력) <br>
+```javascript
+
+·····
+
+export default class Clock extends Component<Props, State> {
+    state = {
+        currentTime: new Date(),
+    };
+
+    componentDidMount = () => {
+        setInterval(() => {
+            console.log("## tick!");
+            this.setState({ currentTime: new Date() });
+        }, 1000);
+    };
+
+·····
+
+}
+```
+
+<img src="img/clock_start.jpg" width="780" height="280"> <br>
+<img src="img/clock_toggle.jpg" width="780" height="280"> <br>
+▷ `시계 토글하기`를 계속 번갈아 클릭하면 '## tick!'이 점점 빠르게 증가하는 것을 볼 수 있다. 이는 Clock 컴포넌트가 마운트 될 때마다 setInterval() 메서드로 1초마다 실행되는 함수를 계속해서 등록하면서 1초에 한 번만 실행돼야 할 함수가 수십 번씩 실행되고 있는 것이다. <br>
+
+◾ 05-06 : src/Clock.tsx 변경 → 위 05-05 문제 해결[componentWillUnmount에 clearInterval() 사용] <br>
+```javascript
+
+·····
+
+export default class Clock extends Component<Props, State> {
+    state = {
+        currentTime: new Date(),
+    };
+
+    handle: number = 0;
+
+    componentDidMount = () => {
+        this.handle = setInterval(() => {
+            console.log("## tick!");
+            this.setState({ currentTime: new Date() });
+        }, 1000);
+    };
+
+    componentWillUnmount = () => {
+        clearInterval(this.handle);
+    };
+
+·····
+
+}
+```
+
+<img src="img/clock_end.jpg" width="780" height="220"> <br>
+▷ `시계 토글하기` 버튼을 여러 번 클릭해도 ##tick! 메시지는 시계가 나타날 때(마운트될 때)만 1초에 한 번씩 출력한다.
+(시계가 사라지면 ##tick! 메시지는 출력하지 않는다.( 콘솔창 메시지 수 증가x )) <br>

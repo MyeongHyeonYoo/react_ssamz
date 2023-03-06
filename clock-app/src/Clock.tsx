@@ -14,10 +14,17 @@ export default class Clock extends Component<Props, State> {
         currentTime: new Date(),
     };
 
+    handle: number = 0;
+
     componentDidMount = () => {
-        setInterval(() => {
+        this.handle = setInterval(() => {
+            console.log("## tick!");
             this.setState({ currentTime: new Date() });
         }, 1000);
+    };
+
+    componentWillUnmount = () => {
+        clearInterval(this.handle);
     };
 
     render() {

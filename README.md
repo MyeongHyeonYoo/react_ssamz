@@ -133,3 +133,15 @@
 ◾ 05-01 : src/Clock.tsx → date-and-time 라이브러리 사용, componentDidMount 생명주기 메서드 사용 <br>
 ◾ 05-02 : src/App.tsx → Clock 컴포넌트에 formatString 속성을 전달 <br>
 ◾ 05-03 : src/index.css → 스타일 지정 <br> 
+◾ 05-04 : src/App.tsx 변경 → componentDidMount, componentWillUnmount 생명주기 메서드를 이용해 리소스를 연결하고 해제 <br> 
+◾ 05-05 : src/Clock.tsx 변경 → componentDidMount 생명주기 메서드에 추가(1초 간격으로 시간이 바뀔 때마다 콘솔에 '## tick!'을 출력) <br>
+◾ 05-06 : src/Clock.tsx 변경 → 위 05-05 문제 해결[componentWillUnmount에 clearInterval() 사용] <br>
+
+## ◾ **chapter 05**  - <i>chatting-app</i>
+
+#### [리액트 클래스 컴포넌트]
+◾ 05-07 : src/Chatting.tsx → 컴포넌트 추가 <br>
+◾ 05-08 : src/App.tsx → Chatting 컴포넌트 임포트하여 렌더링 <br>
+◾ 05-09 : src/ErrorBoundary.tsx → 에러 처리 <br>
+◾ 05-10 : src/UserList.tsx → users라는 속성으로 전달 받아 목록으로 출력(users 속성이 배열이 아닌 값이 전달되면 props.users.map에서 에러 발생) <br>
+◾ 05-11 : src/App.tsx → ErrorBoundary 컴포넌트와 UserList 컴포넌트를 사용하도록 App 컴포넌트에 추가 <br>
