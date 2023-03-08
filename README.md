@@ -145,3 +145,14 @@
 ◾ 05-09 : src/ErrorBoundary.tsx → 에러 처리 <br>
 ◾ 05-10 : src/UserList.tsx → users라는 속성으로 전달 받아 목록으로 출력(users 속성이 배열이 아닌 값이 전달되면 props.users.map에서 에러 발생) <br>
 ◾ 05-11 : src/App.tsx → ErrorBoundary 컴포넌트와 UserList 컴포넌트를 사용하도록 App 컴포넌트에 추가 <br>
+
+## ◾ **chapter 05**  - <i>todolist-app-class</i>
+
+#### [리액트 클래스 컴포넌트]
+◾ 05-12 : src/components/TodoList.tsx / src/components/TodoListItem.tsx / src/components/InputTodo.tsx <br>
+ → 컴포넌트마다 render()메서드의 첫 줄에 console.log() 코드 추가 <br>
+◾ 05-13 : src/main.tsx 변경 → &lt;React.StrictMode&gt;&lt;/React.StrictMode&gt;를 렌더링하지 않도록 변경 <br>
+◾ 05-14 : src/components/TodoList.tsx 변경 → shouldComponentUpdate() 생명주기 메서드를 이용해 최적화 <br>
+◾ 05-15 : src/components/TodoListItem.tsx 변경 → shouldComponentUpdate() 생명주기 메서드를 이용해 최적화 <br>
+◾ 05-16 : src/components/TodoList.tsx 변경 → PureComponent 상속(shouldComponentUpdate 메서드 주석 처리) <br>
+◾ 05-17 : src/components/TodoListItem.tsx 변경 → PureComponent 상속(shouldComponentUpdate 메서드 주석 처리) <br>

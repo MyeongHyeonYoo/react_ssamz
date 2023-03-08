@@ -14,8 +14,8 @@ export default class App extends Component<{}, {}> {
       <ErrorBoundary>
         <div>
           참여 사용자 :
-          {/* <UserList users={["gdhong", "mrlee"]} /> */}
-          <UserList users={"gdhong"} />
+          <UserList users={["gdhong", "mrlee"]} />
+          {/* <UserList users={"gdhong"} /> 에러 */} 
           <hr />
           <Chatting />
         </div>
