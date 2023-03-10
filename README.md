@@ -156,3 +156,12 @@
 ◾ 05-15 : src/components/TodoListItem.tsx 변경 → shouldComponentUpdate() 생명주기 메서드를 이용해 최적화 <br>
 ◾ 05-16 : src/components/TodoList.tsx 변경 → PureComponent 상속(shouldComponentUpdate 메서드 주석 처리) <br>
 ◾ 05-17 : src/components/TodoListItem.tsx 변경 → PureComponent 상속(shouldComponentUpdate 메서드 주석 처리) <br>
+
+## ◾  **chapter 06** - <i>hook-test-app</i>
+
+#### [리액트 훅] 
+◾ 06-01 : src/main.tsx → src/App.tsx를 App01.tsx로 변경 및 App01 추가(수정) <br>
+◾ 06-02 : src/App01.tsx → 상태 관리 및 변경, 바인딩 <br>
+◾ 06-03 : src/App02.tsx → 새로운 컴포넌트 추가 및 src/main.tsx에 App02 추가 <br>
+◾ 06-04 : src/App02.tsx 변경 → depsList 지정, count가 바뀔 때만 effectCallback이 실행되도록 지정 <br>
+◾ 06-05 : src/App02.tsx → [] 빈 배열을 전달하여 effectCallback 함수는 컴포넌트가 마운트될 때만 실행 <br>
