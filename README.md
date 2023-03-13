@@ -164,4 +164,15 @@
 ◾ 06-02 : src/App01.tsx → 상태 관리 및 변경, 바인딩 <br>
 ◾ 06-03 : src/App02.tsx → 새로운 컴포넌트 추가 및 src/main.tsx에 App02 추가 <br>
 ◾ 06-04 : src/App02.tsx 변경 → depsList 지정, count가 바뀔 때만 effectCallback이 실행되도록 지정 <br>
-◾ 06-05 : src/App02.tsx → [] 빈 배열을 전달하여 effectCallback 함수는 컴포넌트가 마운트될 때만 실행 <br>
+◾ 06-05 : src/App02.tsx → [ ] 빈 배열을 전달하여 effectCallback 함수는 컴포넌트가 마운트될 때만 실행 <br>
+
+## ◾  **chapter 06** - <i>clock-app</i>
+
+#### [리액트 훅] 
+◾ 06-06 : Clock2.tsx → useEffect에 setInterval(), clearInterval() 사용 <br>
+◾ 06-07 : App2.tsx → ClockVisible의 불리언 상태 값(true/false)으로 마운트, 언마운트 반복 <br> 
+
+## ◾  **chapter 06** - <i>hook-test-app</i>
+
+#### [리액트 훅] 
+◾ 06-08 : src/App03.tsx → useEffect 여러 개 사용 <br>

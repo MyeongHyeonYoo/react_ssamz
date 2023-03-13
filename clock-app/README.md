@@ -453,3 +453,76 @@ export default class Clock extends Component<Props, State> {
 <img src="img/clock_end.jpg" width="780" height="220"> <br>
 ▷ `시계 토글하기` 버튼을 여러 번 클릭해도 ##tick! 메시지는 시계가 나타날 때(마운트될 때)만 1초에 한 번씩 출력한다.
 (시계가 사라지면 ##tick! 메시지는 출력하지 않는다.( 콘솔창 메시지 수 증가x )) <br>
+
+---
+---
+---
+
+# **chapter 06**  
+
+## 💡 `React` 
+
+- 클린업 함수 <br>
+
+```javascript
+// src/main.tsx에서 App2를 참조하도록 변경
+import App from './App2'
+```
+
+◾ 06-06 : Clock2.tsx → useEffect에 setInterval(), clearInterval() 사용 <br>
+```javascript
+import { useEffect, useState } from 'react'
+import DateAndTime from 'date-and-time'
+
+type Props = {
+    formatString: string;
+};
+
+const Clock2 = (props: Props) => {
+    const [currentTime, setCurrentTime] = useState<Date>(new Date());
+    useEffect(() => {
+        const handle = setInterval(() => {
+            console.log("## tick!");
+            setCurrentTime(new Date());
+        }, 1000);
+
+        return () => {
+            clearInterval(handle);
+        }
+    }, []);
+
+    return (
+        <div className="boxStyle">
+            <h3>{DateAndTime.format(currentTime, props.formatString)}</h3>
+        </div>
+    );
+};
+
+export default Clock2;
+```
+
+◾ 06-07 : App2.tsx → ClockVisible의 불리언 상태 값(true/false)으로 마운트, 언마운트 반복 <br> 
+
+```javascript
+import { useState } from 'react'
+import Clock2 from './clock2'
+
+const App2 = () => {
+    const [formatString, setFomatString] = useState<string>("HH:mm:ss");
+    const [clockVisible, setClockVisible] = useState<boolean>(false);
+
+    return (
+        <div className="boxStyle">
+            <h2>간단한 시계</h2>
+            <button onClick={() => setClockVisible(!clockVisible)}>시계 토글하기</button>
+            <hr />
+            {clockVisible ? <Clock2 formatString={formatString} /> : ""}
+        </div>
+    );
+};
+
+export default App2;
+```
+
+<img src="img/clock2.jpg" width="780" height="180"> <br>
+▷ Clock2 컴포넌트가 보이지 않는 동안은 콘솔에 '## tick!'이 출력되지 않는다. <br>
