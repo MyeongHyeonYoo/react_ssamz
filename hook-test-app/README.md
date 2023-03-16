@@ -274,3 +274,204 @@ import App from './App03'
       - 영역1, 영역2 모두 실행되지 않음 <br>
     - 두 번째 인자로 [dep1, dep2]와 같이 의존 객체 배열을 지정하여 전달할 때 <br>
       - 지정한 의존 객체(dep1 또는 dep2)가 바뀔 때만 영역2에서 영역1순으로 실행 <br>
+
+<br>
+  
+- useReducer 훅 <br>
+  - 상태와 관련된 로직을 컴포넌트 밖으로 분리시킬 수 있다. <br>
+  - 여러 컴포넌트가 유사한 상태 관련 로직이 필요한 경우에 유용하다. <br>
+  ```
+  리듀서란?
+  리듀서라는 이름은 배열의 메서드 중 reduce 메서드에 인자로 전달되는 함수로부터 유래.
+  reduce 메서드는 배열의 데이터를 이용해 합계를 구할 때 사용할 수 있는 메서드이다.
+  ```
+
+  ```javascript
+  // reducer: 리듀서 함수
+  // initialValue : 합계를 구할 때의 초깃값으로 선택적으로 사용할 수 있는 인자
+  reduce(reducer [, initialValue])
+  ```
+
+◾ 06-09 : Typescript Playground에 작성 → reduce(reducer) 함수 사용 <br>
+```
+Typescript Playground(https://www.typescriptlang.org/play)
+```
+
+```javascript
+type MemberType = {
+    name: string;
+    point: number;
+}
+
+const familyMembers: Array<MemberType> = [
+    { name: "홍길동", point: 10000 },
+    { name: "성춘향", point: 20000 },
+    { name: "홍예지", point: 15000 },
+    { name: "홍철수", point: 5000 },
+    { name: "홍희수", point: 10000 }
+];
+
+const initialPoint = 10000;
+const reducer = (totalPoint: number, member: MemberType) => {
+    totalPoint += member.point;
+    
+    return totalPoint;
+}
+
+const totalPoint = familyMembers.reduce(reducer, initialPoint);
+console.log(`가족 합계 포인트 : ${totalPoint}`)
+```
+
+<img src="img/reducer.jpg" width="820" height="400" /> <br>
+▶ 리듀서 함수 내부에서는 배열의 각 항목의 값들을 이용해 합계를 연산한 다음, 새로운 합계 값을 리턴한다. <u>리턴된 합계 값은 상태로 유지</u>된다. <br>
+
+  ```
+  리듀서 함수는 순수 함수(pure function)
+
+  ◈ 입력 인자가 동일하면 리턴 값도 동일해야 한다.
+    - totalPoint와 member 데이터가 같다면 리턴되는 값이 동일하다.
+  ◈ 부수 효과(side effect)가 없어야 한다.
+    - 함수에 전달되는 인자 이외의 외부 리소스에 영향을 주거나 외부 리소스로부터 영향을 받는 부분이 없어야 한다.
+  ◈ 함수에 전달되는 인자는 불변성을 가져야 한다. 따라서 인자를 변경할 수 없다.
+    - 리듀서 함수에 전달된 인자 totalPoint, member를 변경하지 않는다. 새로운 값을 만들어서 리턴해야 한다.
+  ```
+
+```javascript
+(state, action) => {
+  // state와 action을 이용해 연산을 수행한 후 새로운 상태(newState)를 리턴한다.
+  return newState
+}
+```
+
+```
+불변성을 이용하는 경우
+
+1. 상태의 변경을 추적하기가 용이
+2. 디버깅도 편리
+```
+▷ 리액트 애플리케이션에서는 상태가 바뀌면 UI도 갱신되므로 상태의 변경 추적이 디버깅 시에 필요한데, <b>`리듀서`를 사용하면 과거 시점의 상태가 그대로 유지되므로 언제든지 과거 시점의 상태 데이터를 확인할 수 있고 시간대별로 상태가 어떻게 변경됐는지 추적할 수 있다.</b> <br>
+
+<br>
+
+```javascript
+// state : 상태
+// dispatch : 상태를 변경하는 메서드
+// reducer : 새로운 상태를 리턴하는 리듀서 함수
+// initialState : 초기 상태로 지정할 객체
+const [state, dispatch] = useReducer(reducer, initialState);
+```
+
+immer 설치(불변성의 라이브러리) <br>
+```
+npm install immer
+```
+
+◾ 06-10 : src/TodoReducer.ts → 리듀서 함수와 관련된 타입 작성 <br>
+```javascript
+import produce from 'immer'
+
+export type TodoItemType = { id: number; todo: string };
+
+export const TODO_ACTION = {
+    ADD: "addTodo" as const,
+    DELETE: "deleteTodo" as const
+};
+
+export const TodoActionCreator = {
+    addTodo: (todo: string) => ({ type: TODO_ACTION.ADD, payload: { todo: todo } }),
+    deleteTodo: (id: number) => ({ type: TODO_ACTION.DELETE, payload: { id: id }})
+};
+
+export type TodoActionType = 
+    | ReturnType<typeof TodoActionCreator.addTodo>
+    | ReturnType<typeof TodoActionCreator.deleteTodo>;
+
+export const TodoReducer = (state: Array<TodoItemType>, action: TodoActionType) => {
+    switch (action.type) {
+        case TODO_ACTION.ADD:
+            return produce(state, (draft: Array<TodoItemType>) => {
+                draft.push({ id: new Date().getTime(), todo: action.payload.todo });
+            });
+        case TODO_ACTION.DELETE:
+            let index = state.findIndex((item) => item.id === action.payload.id);
+            return produce(state, (draft: Array<TodoItemType>) => {
+                draft.splice(index, 1);
+            });
+        default:
+            return state;
+    }
+};
+```
+
+```javascript
+// TodoActionType의 형식은 다음과 같다.
+
+type TodoActionType = {
+  type: "addTodo";
+  payload: {
+    todo: string;
+  };
+} | {
+  type: "deleteTodo";
+  payload: {
+    id: number;
+  };
+}
+```
+
+◾ 06-11 : src/App04.tsx → TodoReducer.ts 사용 <br> 
+```javascript
+import { useReducer, useState } from 'react'
+import { TodoActionCreator, TodoItemType, TodoReducer } from './TodoReducer'
+
+let idNow = new Date().getTime();
+const initialTodoList: Array<TodoItemType> = [
+    { id: idNow, todo: "운동" },
+    { id: idNow + 1, todo: "독서" },
+    { id: idNow + 2, todo: "음악감상" }
+];
+
+const App = () => {
+    const [todoList, dispatchTodoList] = useReducer(TodoReducer, initialTodoList);
+    const [todo, setTodo] = useState("");
+    const addTodo = () => {
+        dispatchTodoList(TodoActionCreator.addTodo(todo));
+        setTodo("");
+    };
+    const deleteTodo = (id: number) => {
+        dispatchTodoList(TodoActionCreator.deleteTodo(id));
+    };
+    return (
+        <div style={{ padding: "20px" }}>
+            <input type="text" onChange={(e) => setTodo(e.target.value)} value={todo} />
+            <button onClick={addTodo}>할 일 추가</button>
+            <ul>
+                {todoList.map((item) => (
+                    <li key={item.id}>
+                        {item.todo} &nbsp;&nbsp;
+                        <button onClick={() => deleteTodo(item.id)}>삭제</button>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
+
+export default App;
+```
+
+◾ 06-12 : src/main.tsx 변경 → App04 임포트 <br> 
+```javascript
+// src/main.tsx
+
+import App from './App04'
+```
+
+<img src="img/reducer_add.jpg" width="780" height="270" /> <br>
+<img src="img/reducer_delete.jpg" width="780" height="270" /> <br>
+
+```
+useReducer의 장점
+＊ 상태 관리 기능을 컴포넌트로부터 분리할 수 있고, 유사한 상태 관리 기능을 사용하는 여러 컴포넌트가 상태 변경과 관리 기능을 공유할 수 있다.
+＊ 불변성을 가지는 상태 변경을 강제하게 되므로 상태 변경을 추적하기가 용이하다.
+```

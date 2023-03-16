@@ -176,3 +176,7 @@
 
 #### [리액트 훅] 
 ◾ 06-08 : src/App03.tsx → useEffect 여러 개 사용 <br>
+◾ 06-09 : Typescript Playground에 작성 → reduce(reducer) 함수 사용 <br>
+◾ 06-10 : src/TodoReducer.ts → 리듀서 함수와 관련된 타입 작성 <br>
+◾ 06-11 : src/App04.tsx → TodoReducer.ts 사용 <br> 
+◾ 06-12 : src/main.tsx 변경 → App04 임포트 <br> 
