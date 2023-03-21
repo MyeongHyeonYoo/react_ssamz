@@ -180,3 +180,5 @@
 ◾ 06-10 : src/TodoReducer.ts → 리듀서 함수와 관련된 타입 작성 <br>
 ◾ 06-11 : src/App04.tsx → TodoReducer.ts 사용 <br> 
 ◾ 06-12 : src/main.tsx 변경 → App04 임포트 <br> 
+◾ 06-13 : src/App05.tsx → useRef 훅을 이용해 상태와 달리 다시 렌더링되지 않는 데이터 관리 <br> 
+◾ 06-14 : src/App06.tsx → useRef 훅을 이용해 브라우저 DOM에 접근 <br> 

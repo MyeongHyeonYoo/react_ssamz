@@ -475,3 +475,91 @@ useReducer의 장점
 ＊ 상태 관리 기능을 컴포넌트로부터 분리할 수 있고, 유사한 상태 관리 기능을 사용하는 여러 컴포넌트가 상태 변경과 관리 기능을 공유할 수 있다.
 ＊ 불변성을 가지는 상태 변경을 강제하게 되므로 상태 변경을 추적하기가 용이하다.
 ```
+
+- useRef 훅 <br>
+  ```
+  useState 훅을 이용해 생성한 상태를 업데이트하면 컴포넌트가 다시 렌더링 된다.
+  반면에 컴포넌트 내부에 직접 정의한 변수들은 컴포넌트가 다시 렌더링되면 모두 초기화되어 버린다.
+  ```
+  - useRef 훅을 호출한 뒤 리턴받은 ref 객체는 컴포넌트의 모든 생명주기 동안에 유지되므로 다시 렌더링되더라도 기존 참조 데이터를 유지한다. <br>
+  - 대신 ref 객체가 참조하는 데이터가 변경되더라도 다시 렌더링이 일어나지 않는다. <br>
+  - useRef를 이용하면서 동시에 브라우저 DOM 요소의 태그에서 ref 특성을 사용하면 브라우저 DOM의 요소에 직접 접근할 수 있다. <br>
+  - useRef 훅의 리턴값은 값에 대한 참조를 포함하는 객체이다. <br>
+  - 참조 데이터에 접근하려면 반드시 `.current` 속성을 사용해야 한다. <br>
+```javascript
+// initialValue : 참조 객체로 주어질 초깃값
+const refObject = useRef(initialValue);
+```
+
+◾ 06-13 : src/App05.tsx → useRef 훅을 이용해 상태와 달리 다시 렌더링되지 않는 데이터 관리 <br> 
+
+```javascript
+import { useRef, useState } from 'react'
+
+const App = () => {
+    const [name, setName] = useState("홍길동");
+
+    const refTel = useRef("010-2222-2222");
+
+    return (
+        <div className="boxStyle">
+            <h2>상태 데이터</h2>
+            <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+            <br />
+            <div>상태(name) : {name}</div>
+            <hr />
+            <input type="text" onChange={(e) => (refTel.current = e.target.value)} />
+            <br />
+            <div> refTel 값 : {refTel.current}</div>
+        </div>
+    );
+};
+
+export default App;
+```
+▶ <u>참조 객체</u>는 반드시 `current` 속성을 통해서 접근해야 한다. <br>
+
+```javascript
+import App from './App05'
+```
+
+<img src="img/useref.jpg" width="800" height="250" /> <br>
+
+##### 상태를 변경할 때 즉시 렌더링, 참조 객체를 변경할 때는 다시 렌더링 되지 않는다. <br>
+
+◾ 06-14 : src/App06.tsx → useRef 훅을 이용해 브라우저 DOM에 접근 <br> 
+
+```javascript
+import React, { useRef } from 'react'
+
+const App = () => {
+    const elName: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+    const goFirstInputElement = () => {
+        if (elName.current) elName.current.focus();
+    };
+
+    return (
+        <div className="boxStyle">
+            이름: <input ref={elName} type="text" defaultValue="홍길동" />
+            <br />
+            전화 : <input  type="text" defaultValue="010-2222-3333" />
+            <br />
+            주소 : <input type="text" defaultValue="서울" />
+            <br />
+            <button onClick={goFirstInputElement}>첫 번째 필드로 포커스 이동</button>
+        </div>
+    );
+};
+
+export default App;
+```
+▶ elName.current로 &lt;input&gt; 요소에 접근, focus( ) 메서드를 호출해 마우스 포커스를 해당 요소로 위치 <br>
+
+```javascript
+import App from './App06'
+```
+
+<img src="img/useref_focus.jpg" width="800" height="250" /> <br>
+
+##### 브라우저 DOM 요소에 접근하기 <br>
+
