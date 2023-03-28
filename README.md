@@ -182,3 +182,7 @@
 ◾ 06-12 : src/main.tsx 변경 → App04 임포트 <br> 
 ◾ 06-13 : src/App05.tsx → useRef 훅을 이용해 상태와 달리 다시 렌더링되지 않는 데이터 관리 <br> 
 ◾ 06-14 : src/App06.tsx → useRef 훅을 이용해 브라우저 DOM에 접근 <br> 
+◾ 06-15 : src/App07.tsx → 랜더링할 때마다 함수 호출 <br> 
+◾ 06-16 : src/main.tsx 변경 → App07.tsx 컴포넌트 참조 <br> 
+◾ 06-17 : src/App07.tsx 변경 → useMemo 훅 적용 <br> 
+◾ 06-18 : src/App07.tsx 변경 → addTodo 함수와 deleteTodo 함수에 useCallback 훅 적용 <br> 

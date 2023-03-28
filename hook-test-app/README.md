@@ -563,3 +563,182 @@ import App from './App06'
 
 ##### 브라우저 DOM 요소에 접근하기 <br>
 
+- 메모이제이션 훅 <br>
+  - 기존에 연산된 결괏값을 메모리에 캐싱하고, 동일한 입력과 환경에서 재사용하는 기법 <br>
+  - 이 기법을 적절히 사용하면 중복 처리를 피할 수 있어서 애플리케이션의 성능을 최적화할 때 종종 사용. <br>
+    - useMemo
+      ```
+      useMemo는 함수가 호출되고 연산된 리턴값을 캐싱하여 재사용한다. 캐싱되는 것은 함수를 호출한 후의 리턴값이다.
+      ```
+    - useCallback
+      ```
+      useCallback은 컴포넌트 내부의 함수를 캐싱하고, 렌더링할 때마다 함수가 생성되지 않게 재사용한다. 캐싱되는 것은 컴포넌트 내부의 함수이다.
+      ```
+
+
+◾ 06-15 : src/App07.tsx → 랜더링할 때마다 함수 호출 <br> 
+```javascript
+import { useState } from 'react'
+
+type TodoListItemType = {
+    id: number;
+    todo: string;
+};
+
+const getTodoListCount = (todoList: Array<TodoListItemType>) => {
+    console.log("## TodoList 카운트 : ", todoList.length);
+    return todoList.length;
+};
+
+const App = () => {
+    const [todoList, setTodoList] = useState<Array<TodoListItemType>>([]);
+    const [todo, setTodo] = useState<string>("");
+
+    const addTodo = (todo: string) => {
+        let newTodoList = [...todoList, { id: new Date().getTime(), todo: todo }];
+        setTodoList(newTodoList);
+        setTodo("");
+    };
+
+    const deleteTodo = (id: number) => {
+        let index = todoList.findIndex((item) => item.id === id);
+        let newTodoList = [...todoList];
+        newTodoList.splice(index, 1);
+        setTodoList(newTodoList);
+    };
+
+    return (
+        <div className="boxStyle">
+            <input type="text" value={todo} onChange={(e) => setTodo(e.target.value)} />
+            <button onClick={() => addTodo(todo)}>Add Todo</button>
+            <br />
+            <ul>
+                {todoList.map((item) => (
+                    <li key={item.id}>
+                        {item.todo}&nbsp;&nbsp;
+                        <button onClick={() => deleteTodo(item.id)}>삭제</button>
+                    </li>
+                ))}
+            </ul>
+            <div>todo 개수 : {getTodoListCount(todoList)}</div>
+        </div>
+    );
+};
+export default App;
+```
+
+◾ 06-16 : src/main.tsx 변경 → App07.tsx 컴포넌트 참조 <br> 
+
+```javascript
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App07'
+
+ReactDOM.createRoot(document.getElementById('root')!).render(<App />);
+```
+▷ StrictMode는 제거. 콘솔 로그에 메시지가 출력되는데, StrictMode는 내부 에러 확인을 위해 한 번 더 렌더링하기 때문에 콘솔 로그에 메시지가 두 번씩 출력되어 기능을 확인하기 불편하다. <br>
+
+<img src="img/function_value.jpg" width="800" height="280" /> <br>
+<img src="img/function.jpg" width="800" height="300" /> <br>
+▶ 입력 필드에 값을 입력할 때도 콘솔 로그에 메시지가 출력되는데, 다시 렌더링될 때마다 getTodoListCount 함수가 실행되기 때문이다. 새로운 할 일을 입력 필드에 입력하는 동안은 할 일의 개수가 바뀌지 않으므로 매번 getTodoListCount 함수를 호출할 필요는 없다. → 메모이제이션 기능을 제공하는 훅을 사용하여 해결 <br>
+
+- useMemo 훅 <br>
+```javascript
+// factory : 캐싱할 값을 만들어내는 함수이다.
+// depsList : 의존 배열 객체로, 이 배열의 값이 바뀌기 전까지는 캐시를 유지한다. ★
+// 캐싱할 값은 제네릭으로 T에 타입을 지정한다.
+const memoizedValue = useMemo<T>(factory: ( ) => T, depsList)
+```
+
+◾ 06-17 : src/App07.tsx 변경 → useMemo 훅 적용 <br> 
+```javascript
+import { useMemo, useState } from 'react'
+
+·····
+
+const getTodoListCount = (todoList: Array<TodoListItemType>) => {
+    console.log("## TodoList 카운트 : ", todoList.length);
+    return todoList.length;
+};
+
+const App = () => {
+   
+    ·····
+
+    const memoizedCount = useMemo<number>(() => getTodoListCount(todoList), [todoList]);
+
+    return (
+        <div className="boxStyle">
+            
+            ·····
+
+            <div>todo 개수 : { memoizedCount }</div>
+        </div>
+    );
+};
+export default App;
+```
+
+<img src="img/usememo.jpg" width="800" height="180" /> <br>
+▶ getTodoListCount 함수를 호출한 결과를 캐싱한다. 의존 객체 배열(depsList) 값으로 todoList 배열을 지정하였으므로 todoList 배열이 변경되기 전까지는 getTodoListCount 함수를 호출하지 않고 캐시를 이용한다. <br>
+
+- useCallback 훅 <br>
+```javascript
+// callback : 캐싱하려는 대상 함수이다.
+// depsList : 함수를 캐싱할 때 의존 객체 배열이다. 이 배열의 값에 변화가 없으면 함수를 새로 만들지 않는다.
+const memoizedCallback
+```
+
+◾ 06-18 : src/App07.tsx 변경 → addTodo 함수와 deleteTodo 함수에 useCallback 훅 적용 <br> 
+
+```javascript
+import { useCallback, useMemo, useState } from 'react'
+
+·····
+
+const App = () => {
+    const [todoList, setTodoList] = useState<Array<TodoListItemType>>([]);
+    const [todo, setTodo] = useState<string>("");
+
+    const addTodo = useCallback((todo: string) => {
+        let newTodoList = [...todoList, { id: new Date().getTime(), todo: todo }];
+        setTodoList(newTodoList);
+        setTodo("");
+    }, [todoList]);
+    
+    const deleteTodo = useCallback((id: number) => {
+        let index = todoList.findIndex((item) => item.id === id);
+        let newTodoList = [...todoList];
+        newTodoList.splice(index, 1);
+        setTodoList(newTodoList);
+    }, [todoList]);
+
+    ·····
+};
+export default App;
+```
+★ useCallback의 두 번째 인자인 의존 객체 배열(depsList)을 적절하게 지정해야 한다. `useCallback` 훅에 의해 캐싱된 함수는 <u>함수가 생성될 때</u>의 <b>상태나 속성을 참조</b>하기 때문이다. <br> 
+의존 객체 배열을 지정하지 않는다면 캐싱된 함수는 갱신되지 않으며, 항상 초기 상태의 todoList인 빈 배열( [ ] )을 참조한다. <br>
+
+<img src="img/usecallback.jpg" width="800" height="180" /> <br>
+<img src="img/usecallback_value.jpg" width="800" height="310" /> <br>
+
+---
+```javascript
+const addTodo = useCallback((todo: string) => {
+        let newTodoList = [...todoList, { id: new Date().getTime(), todo: todo }];
+        setTodoList(newTodoList);
+        setTodo("");
+    }, []);
+    
+    const deleteTodo = useCallback((id: number) => {
+        let index = todoList.findIndex((item) => item.id === id);
+        let newTodoList = [...todoList];
+        newTodoList.splice(index, 1);
+        setTodoList(newTodoList);
+    }, []);
+```
+<img src="img/usecallback_not_depslist.jpg" width="800" height="150" /> <br>
+<img src="img/usecallback_not_depslist_value.jpg" width="800" height="250" /> <br>
+▶ 의존 객체 배열을 비웠을 때, 값이 갱신되지 않으며 새롭게 등록되지 않는다. (콘솔창에 '##TodoList 카운트 : 1'의 숫자가 늘어나는 것을 확인할 수 있다.)<br>
+※ `메모이제이션 훅(useMemo, useCallback)`은 <b>캐싱</b>으로인해 추가적인 <u>메모리를 사용</u>하기 때문에 남용하면 오히려 성능에 나쁜 영향을 줄 수 있으니 주의(메모이제이션 훅을 반드시 사용할 필요는 없다.) <br>
