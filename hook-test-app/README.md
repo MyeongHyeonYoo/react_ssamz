@@ -742,3 +742,122 @@ const addTodo = useCallback((todo: string) => {
 <img src="img/usecallback_not_depslist_value.jpg" width="800" height="250" /> <br>
 ▶ 의존 객체 배열을 비웠을 때, 값이 갱신되지 않으며 새롭게 등록되지 않는다. (콘솔창에 '##TodoList 카운트 : 1'의 숫자가 늘어나는 것을 확인할 수 있다.)<br>
 ※ `메모이제이션 훅(useMemo, useCallback)`은 <b>캐싱</b>으로인해 추가적인 <u>메모리를 사용</u>하기 때문에 남용하면 오히려 성능에 나쁜 영향을 줄 수 있으니 주의(메모이제이션 훅을 반드시 사용할 필요는 없다.) <br>
+
+- 사용자 정의 훅 <br>
+   - 기본으로 제공되는 훅들을 이용해 개발에 필요로 하는 기능을 '사용자 정의 훅'으로 작성한 후 여러 컴포넌트에서 재사용할 수  있다. <br>
+   - **★ 여러 컴포넌트에서 필요로 하는 코드와 기능을 재사용하기 위해 `사용자 정의 훅`을 작성** <br>
+
+◾ 06-19 : src/App08.tsx → 디지털 시계를 출력하는 컴포넌트 생성과 사용자 정의 훅 사용(date-and-time) <br> 
+```javascript
+// 시간 출력 형식을 지정
+npm install date-and-time
+```
+
+```javascript
+import { useState, useEffect } from 'react'
+import DateAndTime from 'date-and-time'
+
+const App = () => {
+    const [currentTime, setCurrentTime] = useState(DateAndTime.format(new Date(), "HH:mm:ss"));
+
+    useEffect(() => {
+        const handle = window.setInterval(() => {
+            setCurrentTime(DateAndTime.format(new Date(), "HH:mm:ss"));
+        }, 1000);
+
+        return () => {
+            window.clearInterval(handle);
+        };
+    }, []);
+
+    return (
+        <>
+            <h2>현재 시각</h2>
+            <hr />
+            <div>{currentTime}</div>
+        </>
+    );
+};
+export default App;
+```
+
+```javascript
+// src/main.tsx
+import App from './App08'
+```
+
+<img src="img/dateandtime.jpg" width="800" height="250" /> <br>
+
+◾ 06-20 : src/hooks/useClockTime.ts → 사용자 정의 훅 : 시간 간격(interval) + 시간을 출력하는 포맷을 열거형(TimeFormatEnum) 설정<br> 
+
+```javascript
+import { useEffect, useState } from 'react'
+import DateAndTime from 'date-and-time'
+
+enum TimeFormatEnum {
+    HHmmss = "HH:mm:ss",
+    HHmm = "HH:mm",
+    HHmmKOR = "HH시 mm분",
+    HHmmssKOR = "HH시 mm분 ss초"
+}
+
+const useClockTime = (interval: number, timeFormat: TimeFormatEnum) => {
+    const [currentTime, setCurrentTime] = useState(DateAndTime.format(new Date(), timeFormat));
+
+    useEffect(() => {
+        const handle = window.setInterval(() => {
+            setCurrentTime(DateAndTime.format(new Date(), timeFormat));
+        }, interval);
+
+        return () => {
+            window.clearInterval(handle);
+        };
+    }, []);
+
+    return currentTime;
+};
+
+export { useClockTime, TimeFormatEnum };
+```
+→ 사용자 정의 훅의 이름은 일반적으로 use~로 시작하도록 지정 <br>
+▷ useClockTime 사용자 정의 훅은 useState, useEffect 훅을 활용해서 생명주기 이벤트를 등록하고 상태를 저장하는 기능을 가지고 있다. <br>
+
+◾ 06-21 : src/App09.tsx → 사용자 정의 훅을 사용하는 컴포넌트 작성 <br> 
+```javascript
+import { TimeFormatEnum, useClockTime } from './hooks/useClockTime'
+
+// Custom Hook 적용 후
+const App = () => {
+    const currentTime = useClockTime(1000, TimeFormatEnum.HHmmssKOR);
+
+    return (
+        <>
+            <h2>현재 시각</h2>
+            <hr />
+            <div>{currentTime}</div>
+        </>
+    );
+};
+
+export default App;
+```
+
+```javascript
+// src/main.tsx
+import App from './App09'
+```
+
+<img src="img/custom_use_hooks.jpg" width="800" height="250" /> <br>
+<img src="img/enumchange.jpg" width="800" height="250" /> <br>
+
+```
+※ 리액트 훅 사용 시 주의사항
+
+훅을 사용할 때는 다음과 같은 규칙에 주의해야 한다.
+
+→ 클래스 컴포넌트에서는 리액트 훅을 사용할 수 없다.
+  리액트 훅은 함수 컴포넌트 또는 사용자 정의 훅 안에서만 사용할 수 있다. 
+
+→ 함수 컴포넌트 내부의 최상위 코드 영역에서만 리액트 훅을 호출할 수 있다.
+  반복문이나 중첩된 함수 안에서는 리액트 훅을 호출하지 않는다. 리액트 훅은 컴포넌트가 렌더링될 때마다 동일한 순서대로 훅이 호출되어야 한다. 만일 중첩된 함수나 조건문 안에서 훅을 호출하도록 작성했다면 이 순서가 어긋나거나 특정 훅이 호출되지 않아서 에러가 발생할 수 있다.
+```

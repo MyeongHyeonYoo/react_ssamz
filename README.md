@@ -186,3 +186,6 @@
 ◾ 06-16 : src/main.tsx 변경 → App07.tsx 컴포넌트 참조 <br> 
 ◾ 06-17 : src/App07.tsx 변경 → useMemo 훅 적용 <br> 
 ◾ 06-18 : src/App07.tsx 변경 → addTodo 함수와 deleteTodo 함수에 useCallback 훅 적용 <br> 
+◾ 06-19 : src/App08.tsx → 디지털 시계를 출력하는 컴포넌트 생성(date-and-time) <br> 
+◾ 06-20 : src/hooks/useClockTime.ts → 사용자 정의 훅 : 시간 간격(interval) + 시간을 출력하는 포맷을 열거형(TimeFormatEnum) 설정<br> 
+◾ 06-21 : src/App09.tsx → 사용자 정의 훅을 사용하는 컴포넌트 작성 <br> 
