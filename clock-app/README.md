@@ -316,7 +316,7 @@ export default class Child extends Component<Props, State> {
     - 컴포넌트가 마운트될 때와 동일 <br>
 
 - shouldComponentUpdate 메서드 <br>
-    - 랜더링 성능을 최적화할 때 자주 사용 <br>
+    - 렌더링 성능을 최적화할 때 자주 사용 <br>
     - 이 메서드에 전달되는 인자는 새롭게 전달되는 속성(nextProps)과 상태(nextState)이며, 리턴값은 boolean value(true/false)이다. <br>
         - 이 메서드의 리턴값이 true면 다음 단계의 생명주기 메서드(render)가 호출되며, false면 다음 단계의 생명주기로 넘어가지 않는다.  <br>
         ▷ 이 메서드에서는 새롭게 전달된 속성과 상태를 기존의 속성(this.props)과 상태(this.state)와 비교하여 다시 렌더링할지를 결정 <br>

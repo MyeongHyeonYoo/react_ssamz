@@ -135,7 +135,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(<AppContainer />);
 <img src="img/todolistitem_rerender.jpg" width="840" height="440"> <br>
 ▶ 할 일 아이템을 추가할 때마다 TodoListItem 컴포넌트 모두가 다시 렌더링되는 것을 확인 <br>
 - 모든 TodoListItem이 매번 다시 렌더링 되는 이유? <br>
-    - <b>기본적으로 부모 컴포넌트의 상태가 변경되어 다시 렌더링되면 모든 자식 컴포넌트도 함께 랜더링 된다.</b> <br>
+    - <b>기본적으로 부모 컴포넌트의 상태가 변경되어 다시 렌더링되면 모든 자식 컴포넌트도 함께 렌더링 된다.</b> <br>
         - TodoListItem의 개수가 많아지면 추가된 아이템 이외의 다른 TodoListItem은 변경된 것이 없어도 다시 렌더링되기 때문에 렌더링이 느려진다. <br>
         - render()는 가상 DOM에 쓰는 것이지만 이 또한 반복적으로 수행되면 성능에 나쁜 영향이 끼친다. <br>
 

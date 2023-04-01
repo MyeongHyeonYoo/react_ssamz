@@ -182,10 +182,33 @@
 ◾ 06-12 : src/main.tsx 변경 → App04 임포트 <br> 
 ◾ 06-13 : src/App05.tsx → useRef 훅을 이용해 상태와 달리 다시 렌더링되지 않는 데이터 관리 <br> 
 ◾ 06-14 : src/App06.tsx → useRef 훅을 이용해 브라우저 DOM에 접근 <br> 
-◾ 06-15 : src/App07.tsx → 랜더링할 때마다 함수 호출 <br> 
+◾ 06-15 : src/App07.tsx → 렌더링할 때마다 함수 호출 <br> 
 ◾ 06-16 : src/main.tsx 변경 → App07.tsx 컴포넌트 참조 <br> 
 ◾ 06-17 : src/App07.tsx 변경 → useMemo 훅 적용 <br> 
 ◾ 06-18 : src/App07.tsx 변경 → addTodo 함수와 deleteTodo 함수에 useCallback 훅 적용 <br> 
 ◾ 06-19 : src/App08.tsx → 디지털 시계를 출력하는 컴포넌트 생성(date-and-time) <br> 
 ◾ 06-20 : src/hooks/useClockTime.ts → 사용자 정의 훅 : 시간 간격(interval) + 시간을 출력하는 포맷을 열거형(TimeFormatEnum) 설정<br> 
 ◾ 06-21 : src/App09.tsx → 사용자 정의 훅을 사용하는 컴포넌트 작성 <br> 
+
+## ◾  **chapter 07** - <i>hof-test-app</i>
+
+#### [고차 함수와 렌더링 최적화] 
+◾ 07-01 : src/connectClockTime.tsx → 컴포넌트를 인자로 전달 받는 고차 함수 작성 <br>
+◾ 07-02 : src/connectMousePos.tsx → 마우스 위치를 획득하는 고차 함수 작성 <br>
+◾ 07-03 : src/Child.tsx → connectClockTime, connectMousePos 두 고차 함수를 사용 <br>
+◾ 07-04 : src/App.tsx → Child 컴포넌트 임포트 <br>
+
+## ◾  **chapter 07** - <i>todolist-app2</i>
+
+#### [고차 함수와 렌더링 최적화] 
+◾ 07-05 : src/App.tsx → todoList, todo, addTodo 작성과 props 전달 <br>
+◾ 07-06 : src/TodoList.tsx → 컴포넌트 렌더링 여부 체크 <br>
+◾ 07-07 : src/TodoListItem.tsx → 컴포넌트 렌더링 여부 체크 <br>
+◾ 07-08 : src/App.tsx 변경 → deleteTodo 함수 추가 및 TodoList 컴포넌트로 전달 <br>
+◾ 07-09 : src/TodoList.tsx 변경 → deleteTodo 속성 타입 지정 및 TodoListItem 컴포넌트로 전달 <br>
+◾ 07-10 : src/TodoListItem.tsx 변경 → 속성으로 전달받은 deleteTodo 호출 <br>
+◾ 07-11 : src/App.tsx 변경 → addTodo, deleteTodo 함수에 useCallback 적용 <br>
+◾ 07-12 : src/TodoListItem.tsx 변경 → React.memo의 두 번째 인자 함수를 TodoListItem 컴포넌트에 적용 <br>
+◾ 07-13 : src/TodoListItemBody.tsx → TodoListItem 컴포넌트 분리 ① <br>
+◾ 07-14 : src/TodoListItemDeleteButton.tsx → TodoListItem 컴포넌트 분리 ② <br>
+◾ 07-15 : src/TodoListItem.tsx 변경 → TodoListItemBody, TodoListItemDeleteButton 임포트 <br>

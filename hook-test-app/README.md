@@ -576,7 +576,7 @@ import App from './App06'
       ```
 
 
-◾ 06-15 : src/App07.tsx → 랜더링할 때마다 함수 호출 <br> 
+◾ 06-15 : src/App07.tsx → 렌더링할 때마다 함수 호출 <br> 
 ```javascript
 import { useState } from 'react'
 
