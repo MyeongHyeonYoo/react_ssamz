@@ -212,3 +212,12 @@
 ◾ 07-13 : src/TodoListItemBody.tsx → TodoListItem 컴포넌트 분리 ① <br>
 ◾ 07-14 : src/TodoListItemDeleteButton.tsx → TodoListItem 컴포넌트 분리 ② <br>
 ◾ 07-15 : src/TodoListItem.tsx 변경 → TodoListItemBody, TodoListItemDeleteButton 임포트 <br>
+
+## ◾  **chapter 08** - <i>context-api-todolist-app</i>
+
+#### [Context API] 
+◾ 08-01 : src/TodoContext.tsx → Context 객체로 관리할 데이터의 타입과 Context 객체, 상태와 상태 변경 함수를 포함하는 TodoProvider 컴포넌트 작성 <br>
+◾ 08-02 : src/main.tsx → TodoProvider컴포넌트 사용(App 컴포넌트를 자식으로 포함(컴포넌트 중첩 구조)) <br>
+◾ 08-03 : src/App.tsx → 속성을 이용하지 않고, 단지 자식 컴포넌트를 임포트하여 구성하고 조합하는 기능 제공 <br>
+◾ 08-04 : src/InputTodo.tsx → useContext 훅을 이용해 value를 리턴받아 사용 <br>
+◾ 08-05 : src/TodoList.tsx → useContext 훅을 이용해 value 값에 접근 <br>
