@@ -221,3 +221,15 @@
 ◾ 08-03 : src/App.tsx → 속성을 이용하지 않고, 단지 자식 컴포넌트를 임포트하여 구성하고 조합하는 기능 제공 <br>
 ◾ 08-04 : src/InputTodo.tsx → useContext 훅을 이용해 value를 리턴받아 사용 <br>
 ◾ 08-05 : src/TodoList.tsx → useContext 훅을 이용해 value 값에 접근 <br>
+
+## ◾  **chapter 09** - <i>router-test-app</i>
+
+#### [리액트 라우터] 
+◾ 09-01 : src/pages/Home.tsx → URI 경로별로 보여줄 컴포넌트 작성 <br>
+◾ 09-01 : src/pages/About.tsx → URI 경로별로 보여줄 컴포넌트 작성 <br>
+◾ 09-01 : src/pages/Members.tsx → URI 경로별로 보여줄 컴포넌트 작성 <br>
+◾ 09-01 : src/pages/SongList.tsx → URI 경로별로 보여줄 컴포넌트 작성 <br>
+◾ 09-02 : src/components/Header.tsx → Link 컴포넌트 사용 <br>
+◾ 09-03 : src/App.tsx → 라우팅 컴포넌트(Router, Routes, Route) 배치 <br>
+◾ 09-04 : src/index.css → 메뉴, 화면의 일부 요소가 사용하는 스타일 작성 <br>
+◾ 09-05 : src/main.tsx → index.css와 bootstrap.css 참조 <br>
