@@ -233,3 +233,7 @@
 ◾ 09-03 : src/App.tsx → 라우팅 컴포넌트(Router, Routes, Route) 배치 <br>
 ◾ 09-04 : src/index.css → 메뉴, 화면의 일부 요소가 사용하는 스타일 작성 <br>
 ◾ 09-05 : src/main.tsx → index.css와 bootstrap.css 참조 <br>
+◾ 09-06 : src/App.tsx 변경 → 속성 전달 <br>
+◾ 09-07 : src/pages/About.tsx 변경 → App 컴포넌트에서 전달하는 속성 받기 <br>
+◾ 09-08 : src/App.tsx 변경 → '배열' 형태의 상태를 속성으로 전달 <br>
+◾ 09-09 : src/Pages/Members.tsx 변경 → 전달 받은 members 속성 사용 <br>

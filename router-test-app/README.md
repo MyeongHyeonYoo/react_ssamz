@@ -259,3 +259,127 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 <img src="img/router_link_component_home.jpg" width="780" height="320"> <br>
 <img src="img/router_link_component_songs.jpg" width="780" height="320"> <br>
 ▶ 메뉴 탭을 선택할 때마다 주소창의 URL과 Route.Provider의 자식 내용이 바뀌는 것을 확인 <br>
+
+- 라우팅된 컴포넌트로 속성 전달하기 <br>
+
+◾ 09-06 : src/App.tsx 변경 → 속성 전달 <br>
+→ Route 컴포넌트의 element 속성에 지정된 JSX 요소에 직접 속성을 전달할 수 있다. <br>
+
+```javascript
+·····
+
+const App = () => {
+  return (
+    <Router>
+      <div className="container">
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About title={'여우와 늙다리들'} />} />
+          ·····
+        </Routes>
+      </div>
+    </Router>
+  );
+};
+
+export default App;
+```
+(title 오류 → 추후 수정) <br>
+
+◾ 09-07 : src/pages/About.tsx 변경 → App 컴포넌트에서 전달하는 속성 받기 <br>
+
+```javascript
+import React from 'react'
+
+type Props = { title: string };
+
+const About = (props: Props) => {
+    return (
+        <div className="card card-body">
+            <h2>About {props.title}</h2>
+        </div>
+    );
+};
+
+export default About;
+```
+(title 오류 사라진다.) <br>
+
+<img src="img/element_props.jpg" width="780" height="320"> <br>
+▶ 컴포넌트로 전달된 속성 확인 <br>
+
+- 복잡한 객체를 속성으로 전달하기 <br>
+
+◾ 09-08 : src/App.tsx 변경 → '배열' 형태의 상태를 속성으로 전달 <br>
+
+```javascript
+import { useState } from 'react'
+·····
+
+export type MemberType = { name: string; photo: string };
+
+const App = () => {
+  const [members] = useState<Array<MemberType>>([
+    { name: "Maggie Adams", photo: "photos/Mag.png" },
+    { name: "Sammie Purcell", photo: "photos/Sam.png" },
+    { name: "Tim Purcell", photo: "photos/Tim.png" },
+    { name: "Scott King", photo: "photos/King.png" },
+    { name: "Johnny Pike", photo: "photos/JPike.jpg" },
+    { name: "Toby", photo: "photos/Toby.jpg" }
+  ]);
+
+  return (
+    <Router>
+      ·····
+          <Route path="/members" element={<Members members={members} />} />
+          ·····
+    </Router>
+  );
+};
+
+export default App;
+```
+
+```
+[photos.zip 사진파일 다운로드]
+http://github.com/stepanowon/react-ts-quickstart
+
+public/photos/'사진 파일'들 위치
+```
+
+◾ 09-09 : src/Pages/Members.tsx 변경 → 전달 받은 members 속성 사용 <br>
+
+```javascript
+import { MemberType } from '../App'
+
+type Props = { members: Array<MemberType> };
+
+const Members = (props: Props) => {
+    let imgstyle = { width: 90, height: 80 };
+    let list = props.members.map((member) => {
+        return (
+            <div key={member.name} className="col-6 col-md-4 col-lg-3">
+                <img src={member.photo} alt={member.name} className="img-thumbnail" style={imgstyle} />
+                <br />
+                <h6>{member.name}</h6>
+                <br />
+                <br />
+            </div>
+        );
+    });
+    return (
+        <div>
+            <h2 className="m-4">Members</h2>
+            <div className="container">
+                <div className="row">{list}</div>
+            </div>
+        </div>
+    );
+}
+
+export default Members;
+```
+
+<img src="img/members.jpg" width="780" height="450"> <br>
+▶ members 속성으로 전달된 것을 확인[name, photo] <br>
