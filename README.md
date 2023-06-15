@@ -237,3 +237,21 @@
 ◾ 09-07 : src/pages/About.tsx 변경 → App 컴포넌트에서 전달하는 속성 받기 <br>
 ◾ 09-08 : src/App.tsx 변경 → '배열' 형태의 상태를 속성으로 전달 <br>
 ◾ 09-09 : src/Pages/Members.tsx 변경 → 전달 받은 members 속성 사용 <br>
+◾ 09-10 : src/App.tsx 변경 → URI 파라미터 적용 <br>
+◾ 09-11 : src/pages/SongList.tsx 변경 → songs 속성으로 전달받은 데이터를 목록으로 출력 <br>
+◾ 09-12 : src/pages/SongDetail.tsx → URL 경로 문자열 받아내기 / useParams, useNavigate 훅 사용하기 <br>
+◾ 09-13 : src/pages/SongDetail2.tsx → 클래스 컴포넌트에서 동적 파라미터를 이용하기 위해 고차 함수 생성 <br>
+◾ 09-14 : src/App.tsx 변경 → SongDetail2 컴포넌트 사용 <br>
+◾ 09-15 : src/pages/songs/Player.tsx → 속성으로 전달 받은 songs 정보에서 :id 파라미터 값으로 한 곡의 정보를 획득해 플레이어를 렌더링 <br>
+◾ 09-16 : src/pages/SongList.tsx 변경 → 중첩 &lt;Route /&gt;의 &lt;Outlet /&gt; 컴포넌트 추가 <br>
+◾ 09-17 : src/index.css 변경 → CSS 스타일 추가 / font-awesome 라이브러리 참조 <br>
+◾ 09-18 : src/App.tsx 변경 → Player 컴포넌트를 임포트하여 중첩된 라우트로 구성 <br>
+◾ 09-19 : src/pages/songs/Index.tsx → index 라우트 적용(준비) <br>
+◾ 09-20 : src/App.tsx 변경 → Index.tsx 임포트 <br>
+◾ 09-21 : src/pages/SongList.tsx 변경 → useMatch 사용, 리턴된 pathMatch 객체에 따른 스타일 적용 <br>
+◾ 09-22 : src/pages/About.tsx 변경 → useSearchParams 훅 사용 <br>
+◾ 09-23 : src/pages/Members.tsx 변경 → useNavigate 훅 사용 <br>
+◾ 09-24 : src/pages/Home.tsx 변경 → useLocation 훅 사용 <br>
+◾ 09-25 : src/App.tsx 변경 → &lt;Player /&gt; 컴포넌트로 속성을 전달하지 않도록 변경 <br>
+◾ 09-26 : src/pages/SongList.tsx 변경 → 전달받은 songs 속성을 &lt;Outlet /&gt;의 context로 전달 <br>
+◾ 09-27 : src/pages/Player.tsx 변경 → useOutletContext 훅 사용 : songs 데이터 이용 <br>
