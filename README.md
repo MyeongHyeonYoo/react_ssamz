@@ -255,3 +255,6 @@
 ◾ 09-25 : src/App.tsx 변경 → &lt;Player /&gt; 컴포넌트로 속성을 전달하지 않도록 변경 <br>
 ◾ 09-26 : src/pages/SongList.tsx 변경 → 전달받은 songs 속성을 &lt;Outlet /&gt;의 context로 전달 <br>
 ◾ 09-27 : src/pages/Player.tsx 변경 → useOutletContext 훅 사용 : songs 데이터 이용 <br>
+◾ 09-28 : src/components/NotFound.tsx → location 객체를 이용 <br>
+◾ 09-29 : src/App.tsx 변경 → &lt;Route /&gt; 컴포넌트 설정 <br>
+◾ 09-30 : src/components/Header.tsx 변경 → NavLink 사용 <br>

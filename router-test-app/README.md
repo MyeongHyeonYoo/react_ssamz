@@ -1409,3 +1409,345 @@ export default Player;
 
 <img src="img/outletcontext_hook.jpg" width="900" height="500"> <br>
 ▶ 영상 재생 후 Player 컴포넌트의 OutletContext 확인 <br>
+
+- 라우터 관련 컴포넌트 <br>
+
+    ```
+    [컴포넌트]
+
+    BrowserRouter, Routes, Route, Link, Navigate 컴포넌트 … 외 다른 컴포넌트가 있다.
+    ```
+    - `Router 컴포넌트` <br>
+        - `BrowserRouter` <br> 
+            BrowserRouter는 HTML5 History API를 사용하여 URI와 UI를 동기화한 상태를 유지할 수 있는 기능을 제공한다. BrowserRouter는 URI 경로를 사용하여 브라우저의 주소를 저장하고, 브라우저 history 객체의 스택을 사용해 탐색한다. BrowserRouter 사용은 웹 브라우저에서 리액트 라우터를 적용할 때 가장 권장하는 방법이다. <br>
+        - `HashRouter` <br>
+            URL의 해시 정보를 이용해서 URI 경로와 UI를 동기화한 상태로 유지시킨다. 해시는 # 기호로 표시된다. 이 라우터는 주로 BrowserRouter가 지원되지 않는 환경일 때 사용을 권장한다. 
+            ```
+            HashRouter는 http://localhost:3000/#/about과 같이 # 다음에 /about처럼 라우팅에 사용하는 경로가 브라우저의 주소 입력란에 찍힌다.
+            ```
+        - `MemoryRouter` <br>
+            MemoryRouter는 애플리케이션의 메모리 영역에 배열을 만들어 라우팅 정보를 저장하고 UI와 동기화시킨다. 따라서 URI 경로가 브라우저의 주소창에 표시되지 않고 메모리에만 유지된다. 브라우저 주소 UI를 보여주지 않아도 되는 하이브리드 앱 같은 경우에 사용할 수 있다. <br>
+        
+    □ 일반적인 '웹 애플리케이션'이라면 `BrowserRouter`를 권장한다. 하지만, `BrowserRouter`를 사용하려면 **리액트 애플리케이션을 호스팅하는 웹 서버가 `fallback UI`를 지원**해야 한다. fallback UI는 웹 서버에서 404 Not Found 에러가 발생하더라도 정해진 기본 페이지를 응답하는 기능이다. <br>
+    ```
+    SPA는 웹 브라우저에서 작동되면서 라우팅한다.
+
+    fallback UI를 지원하지 않는 웹 서버에 호스팅된 리액트 라우터 애플리케이션을 
+    브라우저에서 실행할 때 브라우저에 http://server/about과 같이 
+    직접 주소를 입력하고 요청하면 브라우저 화면에 '404 Not Found' 에러가 발생할 것이다.
+    ```
+
+    &lt;fallback UI를 지원하지 않는 웹 서버일 때&gt; <br>
+    |||||
+    |:---:|:---:|:---:|:---|
+    |브라우저<br>┃■┃<br>┃■┃<br>┃■┃<br>┃■┃|/about 직접 요청<br>────────────▷<br>◁────────────<br>404 Not Found 오류 발생|웹 서버<br>┃▲┃<br>┃▲┃<br>┃▲┃<br>┃▲┃|SPA앱은 index.html 문서<br>하나만 존재하므로<br>/about 경로의 리소스가<br>존재하지 않음|
+    |||||
+
+    → 404에러가 발생하는 것은, SPA는 HTML 문서를 /index.html 단 하나만 가지고 있기 때문이다. <br>
+
+    <br>
+
+    &lt;fallback UI를 지원하는 웹 서버일 때&gt; <br>
+    |||||
+    |:---:|:---:|:---:|:---|
+    |브라우저<br><br><br>-------------------------|① /about 직접 요청<br>────────────▷<br><br><br>◁────────────<br>② /index.html 응답|웹 서버<br><br><br><br>|웹 서버가 fallback UI를 제공한다면?<br> - fallback UI : /index.html|
+    |│<br>│<br>▽||||
+    |③ /about 경로에 대한 라우팅 수행||||
+    |⊙||||
+    |||||
+
+    → fallback UI가 /index.html로 지정 <br>
+    → http://server/about과 같이 존재하지 않는 경로를 요청하더라도 일단 /index.html문서를 응답할 것이다. <br>
+    → 다음에 웹 브라우저 상에서 리액트 라우터 애플리케이션이 &lt;Route /&gt; 컴포넌트로 매칭된 컴포넌트를 렌더링해주도록 정상 작동할 것이다. <br>
+
+    ```
+    웹 서버에 fallback UI를 어떻게 설정하는가?
+
+    웹 서버마다 fallback UI를 지정하는 방법이 다르다. 따라서 인터넷을 검색해서 fallback UI를
+    지원하는지를 찾아보는 것이 좋다. 다음은 리액트가 아니라 Vue의 공식 문서 내용이지만
+    Vue Router의 사용 가이드에 서버 설정 방법이 소개되어 있으므로 참고.
+    (Apache, Nginx, Node.js, Express, IIS 등 주요 웹 서버의 설정 방법이 안내되어 있다.)
+
+    
+    https://v3.router.vuejs.org/kr/guide/essentials/history-mode.html#서버-설정-예제
+    ```
+
+    - fallback UI가 없는 웹 서버에서의 에러 확인 <br>
+        *npm run dev* 명령으로 실행한 개발 서버는 fallback UI가 /index.html로 지정되어 있기 때문에 에러가 발생하지 않았다. <br>
+        
+        <br>
+        
+        router-test-app을 빌드 <br>
+        빌드된 산출물은 'dist' 디렉터리에 생성 <br>
+        ```
+        npm run build    
+        ```
+
+        node 기반의 웹 서버로 구동 <br>
+        프로젝트 디렉터리에서 웹 서버를 구동 <br>
+        ```
+        npx serve dist --listen 3000
+        ```
+        → serve는 node 기반의 웹 서버인데 fallback UI 기능이 없다. <br>
+        → 앞의 명령은 dist 디렉터리를 웹 서버의 루트 디렉터리로 설정해서 웹 서버를 구동한 것으로, 브라우저에서 확인하면 Home 화면이 나타날 것이다. <br>
+
+        
+
+        <img src="img/not_fallback_ui.jpg" width="750" height="220"> <br>
+        <img src="img/not_fallback_ui_404.jpg" width="300" height="220"> <br>
+        ▶ fallback UI가 없을 때 에러가 발생하는 화면을 테스트 <br>
+        ```
+        Ctrl + C를 눌러 serve 웹 서버를 중단하고
+        다시 npm run dev 명령으로 개발 서버를 구동하면
+        개발 서버는 fallback UI가 지원되므로 정상적으로 About 컴포넌트가 나타난다.
+        (localhost:3000/about)
+        ```
+        <img src="img/fallback_ui.jpg" width="750" height="220"> <br>
+
+
+        ♠ **만일 fallback UI를 지원하도록 웹 서버를 설정할 수 없다면, 이때는 `HashRouter`를 사용하면 된다. HashRouter를 사용하면 웹서버가 fallback UI를 지원하지 않아도 에러가 발생하지 않는다.** <br>
+        ```javascript
+        // App 컴포넌트에 HashRouter로 변경
+        import { HashRouter as Router, Routes, Route } from 'react-router-dom'
+        ```
+
+        <img src="img/hashrouter.jpg" width="750" height="220"> <br>
+        ▶ 주소창에 URL이 http://localhost:5173/#/about으로 나타난다. <br>
+        (PC 환경과 포트 설정에 따라 포트 번호 다를 수 있다.) <br>
+
+        ```
+        해시(hash : #) 기호를 기준으로
+
+        앞부분이 웹 서버로 요쳥되는 경로,
+        뒷부분이 문서 내부의 콘텐츠를 의미
+
+        웹 서버로는 'http://localhost:3000/'까지만 요청되어
+        기본 문서인 /index.html을 응답하므로 404 에러 없이 정상적으로 실행되는 것이다.
+        ```
+
+    - 404 라우트와 리디렉션 구성 <br> 
+        ```
+        App 컴포넌트에서 HashRouter를 사용하도록 변경했던 부분을 
+        다시 BrowserRouter로 복원하고 개발 서버로 실행
+        ```
+        http://localhost:5173/asdf와 같이 &lt;Route /&gt;에 매칭되지 않는 경로를 브라우저에 직접 요청하는 경우, &lt;Route /&gt;에 매칭되는 URI 경로가 아니므로 &lt;Route /&gt; 위치에 아무것도 나타나지 않는다. <br>
+
+        <img src="img/asdf.jpg" width="750" height="220"> <br>
+        ▶ 웹 서버는 fallback UI를 지정했기 때문에 위 그림처럼 4040 에러 대신 /index.html을 응답한다. <br>
+        
+        <br>
+
+        따라서 404 에러 화면을 리액트 라우터 수준에서 처리해야 하는데, 이를 `404 라우트`라고 부른다. 404 라우트는 App 컴포넌트에서 &lt;Routes /&gt; 내부의 가장 마지막에 &lt;Route path="*" … /&gt;와 같이 만들어주면 된다. <br>
+        ```javascript     
+         /* <Route />의 매칭 방법 */
+           
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About title={"여우와 늙다리들"} />} />
+            <Route path="/members" element={<Members members={members} />} />
+            <Rtoue path="/songs" element={<SongList songs={songs} />}>
+                <Route index element={<SongIndex />} />
+                <Route path=":id" element={<Player />} />
+            </Rtoue>
+        </Routes>
+        ```
+
+        리액트 라우터의 &lt;Route /&gt;는 위에서 아래로 내려오면서 경로의 매칭 여부를 확인하다가 매칭되는 것이 발견되면 그 컴포넌트를 렌더링한다. 즉, **매칭된 이후의 &lt;Route /&gt;에 대해서는 매칭 여부를 확인하지 않는다.** <br>
+        따라서 /asdf와 같이 존재하지 않는 경로일 때는 레이아웃을 제외하고 아무것도 나타나지 않았다. <br>
+        이 문제를 해결하기 위해 404 라우트를 마지막에 배치하여 사용한다. <br>
+
+        ```javascript
+        // 마지막 Route로 404 라우트를 배치한다.
+
+        <Routes>
+            …
+            <Route path="*" element={ <NotFound /> } />
+        </Routes>
+        ```
+        404 라우트는 경로(path)가 *이므로 이전에 아무것도 매칭되지 않았다면 무조건 404 라우트에 지정된 컴포넌트가 렌더링 된다. <br>
+        또한, 특정 경로로 요청하면 다른 경로로 강제 이동시켜야 하는 경우가 있는데, 이와 같은 방법을 리디렉션(Redirection)이라고 부르며, 리액트 라우터 6 버전에서  &lt;`Navigate` /&gt; 컴포넌트를 활용할 수 있다. <br>
+
+        ```javascript
+        // /a로 요청했을 때 /b로 리디렉션
+        <Route path="/a" element={<Navigate to="/b" />} />
+        <Route path="/b" element={<BComponent />} />
+        ```
+
+
+◾ 09-28 : src/components/NotFound.tsx → location 객체를 이용 <br>
+▷ location 객체를 이용해 현재 요청된 경로명을 화면에 보여주면서 존재하지 않는 경로임을 나타낸다. <br>
+
+```javascript
+import React from 'react'
+import { useLocation } from 'react-router'
+
+const NotFound = () => {
+    const location = useLocation();
+
+    return (
+        <div className="m-3">
+            <h3>존재하지 않는 경로</h3>
+            <p>요청 경로 : {location.pathname}</p>
+        </div>
+    );
+}
+
+export default NotFound;
+```
+
+◾ 09-29 : src/App.tsx 변경 → &lt;Route /&gt; 컴포넌트 설정 <br>
+
+```javascript
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+…
+import NotFound from './components/NotFound'
+…
+
+const App = () => {
+  const [members] = useState<Array<MemberType>>([
+    { name: "Maggie Adams", photo: "photos/Mag.png" },
+    { name: "Sammie Purcell", photo: "photos/Sam.png" },
+    { name: "Tim Purcell", photo: "photos/Tim.png" },
+    { name: "Scott King", photo: "photos/King.png" },
+    { name: "Johnny Pike", photo: "photos/JPike.jpg" },
+    { name: "Toby", photo: "photos/Toby.jpg" }
+  ]);
+
+  const [songs] = useState<Array<SongType>>([
+    { id: 1, title: "Fallin' for you", musician: "Colbie callet", youtube_link: "PABUl_EX_hw"},
+    { id: 2, title: "Can't hurry love", musician: "The supremes", youtube_link: "EJDPhjQft04"},
+    { id: 3, title: "Landslide", musician: "Dixie chicks", youtube_link: "V2N7gYom9-A" },
+    { id: 4, title: "Can't let go", musician: "Linda ronstadt", youtube_link: "P-EpGKXmoe4" },
+    { id: 5, title: "Doctor my eyes", musician: "Jackson Browne", youtube_link: "7JlFKS_1oZk" },
+    { id: 6, title: "We gotta get you a woman", musician: "Todd Rundgren", youtube_link: "EyUjbBViAGE" },
+    { id: 7, title: "Hip to my heart", musician: "Band Perry", youtube_link: "vpLCFnD9LFo" },
+    { id: 8, title: "Rolling in the deep", musician: "Adele", youtube_link: "EvK8pDK6IQU" }
+  ]);
+
+  return (
+    <Router>
+      <div className="container">
+        <Header />
+        <Routes>
+          <Route path="/" element={<Navigate to="/home" /> } /> {/* 리디렉션 기능 추가 */}
+          <Route path="/home" element={<Home />} /> {/* 리디렉션 기능 추가 */}
+          <Route path="/about" element={<About title={'여우와 늙다리들'} />} />
+          <Route path="/members" element={<Members members={members} />} />
+          <Route path="/songs" element={<SongList songs={songs} />}>
+            <Route index element={<SongIndex />} />
+            <Route path=":id" element={<Player />} />
+          </Route>
+          <Route path="*" element={<NotFound />} /> {/* 404 라우트 */}
+        </Routes>
+      </div>
+    </Router>
+  );
+};
+
+export default App;
+```
+▶ 리디렉션 기능 추가 : /로 요청하면 /home으로 리디렉션되며, /home 경로에서 Home 컴포넌트로 렌더링한다. <br>
+
+<br>
+
+<img src="img/not_found_1.jpg" width="750" height="220"> <br>
+<img src="img/not_found_2.jpg" width="750" height="220"> <br>
+▶ 잘못된 경로를 입력하면 위 사진처럼 404 라우트(NotFound)가 렌더링 되는 것을 확인 <br>
+▶ http://localhost:5173/을 요청하면 /home 경로로 리디렉션되는 것도 확인 <br>
+
+- 
+    - `NavLink 컴포넌트` <br>
+    앞서 Header 컴포넌트에서 화면 전환을 위한 링크를 생성하기 위해 Link 컴포넌트를 사용하였다. <br>
+    ```javascript
+    // Link 컴포넌트
+    
+    <Link className="btn btn-success menu" to="/about">
+        About
+    </Link>
+    ```
+
+    `NavLink 컴포넌트`는 Link 컴포넌트와 유사해 보이지만 '현재 요청된 경로와의 일치 여부에 따라 각기 다른 스타일을 부여할 수 있는 Link 컴포넌트'이다. <br>
+
+    ```javascript
+    // style에 동적으로 부여
+    <NavLink to="/blog" style={ ({ isActive }) => {
+        return isActive ? activeStyle : undefined
+    }}>
+        Blog
+    </NavLink>
+
+
+    // className에 동적으로 부여
+    <NavLink to="/catalogs" className={ ({ isActive }) => {
+        return isActive ? activeClassName : undefined
+    }}>
+        Catalogs
+    </NavLink>
+    ```
+    NavLink 사용 예시를 살펴보면 style과 className 속성에 함수를 바인딩하고 있으며, 이 함수의 인자로 전달된 객체의 isActive 속성에 따라 각기 다른 스타일과 클래스명을 리턴한다. 이 함수는 NavLink의 내부에서 사용하며, isActive 값으로는 요청된 경로와 NavLink의 to 속성의 경로가 매칭될 때 true가 전달된다. <br>
+
+◾ 09-30 : src/components/Header.tsx 변경 → NavLink 사용 <br>
+
+```javascript
+import { NavLink } from 'react-router-dom'
+
+const Header = () => {
+    return(
+        <div className="card bg-light">
+            <div className="card-heading">
+                <h2 className="text-center m-3">Foxes and Fossils</h2>
+                <p>
+                    <a href="http://foxesandfossils.com">http://foxesandfossils.com</a>
+                </p>
+                <div className="row">
+                    <div className="col-12">
+                        {/* <Link className="btn btn-success menu" to="/">Home</Link>
+                        <Link className="btn btn-success menu" to="/about">About</Link>
+                        <Link className="btn btn-success menu" to="/members">Members</Link>
+                        <Link className="btn btn-success menu" to="/songs">Songs</Link> */}
+
+                        <NavLink to="/home" className={ ({ isActive }: any) => {
+                            return isActive ? "btn menu btn-dark" : "btn menu btn-success";
+                        }}>
+                            Home
+                        </NavLink>
+                        <NavLink to="/about" className={ ({ isActive }: any) => {
+                            return isActive ? "btn menu btn-dark" : "btn menu btn-success";
+                        }}>
+                            About
+                        </NavLink>
+                        <NavLink to="/members" className={ ({ isActive }: any) => {
+                            return isActive ? "btn menu btn-dark" : "btn menu btn-success";
+                        }}>
+                            Member
+                        </NavLink>
+                        <NavLink to="/songs" className={ ({ isActive }: any) => {
+                            return isActive ? "btn menu btn-dark" : "btn menu btn-success";
+                        }}>
+                            Songs
+                        </NavLink>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Header;
+```
+▶ 함수 파라미터 isActive에 에러나는 것, any 타입을 지정하여 오류 수정 <br>
+(책에는 타입 지정 없음) <br>
+
+```javascript
+…
+    <NavLink to="/home" className={ ({ isActive }) => { // 타입 지정 안 되어 있다.
+        return isActive ? "btn menu btn-dark" : "btn menu btn-success";
+    }}>
+        Home
+    </NavLink>
+…
+```
+
+<img src="img/navlink.jpg" width="750" height="250"> <br>
+<img src="img/navlink_2.jpg" width="750" height="450"> <br>
+▶ 브라우저 화면에서 확인하면 현재 요청과 매칭되는 메뉴가 NavLink의 스타일로 인해 메뉴 스타일이 다르게 나타난다. <br>

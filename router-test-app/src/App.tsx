@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+// import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 import Header from './components/Header'
 import About from './pages/About'
 import Home from './pages/Home'
@@ -9,6 +10,7 @@ import SongList from './pages/SongList'
 // import SongDetail from './pages/SongDetail2'
 import Player from './pages/songs/Player'
 import SongIndex from './pages/songs/Index'
+import NotFound from './components/NotFound'
 
 export type MemberType = { name: string; photo: string };
 export type SongType = { id: number; title: string; musician: string; youtube_link: string };
@@ -39,7 +41,8 @@ const App = () => {
       <div className="container">
         <Header />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Navigate to="/home" /> } /> {/* 리디렉션 기능 추가 */}
+          <Route path="/home" element={<Home />} /> {/* 리디렉션 기능 추가 */}
           {/* <Route path="/about" element={<About />} /> */}
           <Route path="/about" element={<About title={'여우와 늙다리들'} />} />
           {/* <Route path="/members" element={<Members />} /> */}
@@ -58,6 +61,7 @@ const App = () => {
             <Route index element={<SongIndex />} />
             <Route path=":id" element={<Player />} /> {/* 속성을 전달하지 않도록 수정 */}
           </Route>
+          <Route path="*" element={<NotFound />} /> {/* 404 라우트 */}
         </Routes>
       </div>
     </Router>
