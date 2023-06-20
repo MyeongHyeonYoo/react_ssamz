@@ -1,16 +1,27 @@
+import React from 'react'
 import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 // import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 import Header from './components/Header'
-import About from './pages/About'
-import Home from './pages/Home'
-import Members from './pages/Members'
-import SongList from './pages/SongList'
+import pMinDelay from 'p-min-delay'
+import Loading from './components/Loading'
+// import Home from './pages/Home'
+// import About from './pages/About'
+// import SongList from './pages/SongList'
+// import Members from './pages/Members'
 // import SongDetail from './pages/SongDetail'
 // import SongDetail from './pages/SongDetail2'
-import Player from './pages/songs/Player'
-import SongIndex from './pages/songs/Index'
-import NotFound from './components/NotFound'
+// import Player from './pages/songs/Player'
+// import SongIndex from './pages/songs/Index'
+// import NotFound from './components/NotFound'
+
+const Home = React.lazy(() =>pMinDelay(import("./pages/Home"), 1000));
+const About = React.lazy(() =>pMinDelay(import("./pages/About"), 1000));
+const SongList = React.lazy(() =>pMinDelay(import("./pages/SongList"), 1000));
+const Members = React.lazy(() =>pMinDelay(import("./pages/Members"), 1000));
+const Player = React.lazy(() =>pMinDelay(import("./pages/songs/Player"), 1000));
+const SongIndex = React.lazy(() =>pMinDelay(import("./pages/songs/Index"), 1000));
+const NotFound = React.lazy(() =>pMinDelay(import("./components/NotFound"), 1000));
 
 export type MemberType = { name: string; photo: string };
 export type SongType = { id: number; title: string; musician: string; youtube_link: string };
@@ -37,35 +48,37 @@ const App = () => {
   ]);
 
   return (
-    <Router>
-      <div className="container">
-        <Header />
-        <Routes>
-          <Route path="/" element={<Navigate to="/home" /> } /> {/* 리디렉션 기능 추가 */}
-          <Route path="/home" element={<Home />} /> {/* 리디렉션 기능 추가 */}
-          {/* <Route path="/about" element={<About />} /> */}
-          <Route path="/about" element={<About title={'여우와 늙다리들'} />} />
-          {/* <Route path="/members" element={<Members />} /> */}
-          <Route path="/members" element={<Members members={members} />} />
-          {/* <Route path="/songs" element={<SongList />} /> */}
-          {/* <Route path="/songs" element={<SongList songs={songs} />} /> */}
-          {/* <Route path="/songs/:id" element={<SongDetail songs={songs} />} /> */}
-          {/* <Route path="/songs" element={<SongList songs={songs} />}>
-            <Route path=":id" element={<Player songs={songs} />} />
-          </Route> */}
-          {/* <Route path="/songs" element={<SongList songs={songs} />}>
-            <Route index element={<SongIndex />} />
-            <Route path=":id" element={<Player songs={songs} />} />
-          </Route> */}
-          <Route path="/songs" element={<SongList songs={songs} />}>
-            <Route index element={<SongIndex />} />
-            <Route path=":id" element={<Player />} /> {/* 속성을 전달하지 않도록 수정 */}
-          </Route>
-          <Route path="*" element={<NotFound />} /> {/* 404 라우트 */}
-        </Routes>
-      </div>
-    </Router>
+    <React.Suspense fallback={<Loading />}>
+      <Router>
+        <div className="container">
+          <Header />
+          <Routes>
+            <Route path="/" element={<Navigate to="/home" /> } /> {/* 리디렉션 기능 추가 */}
+            <Route path="/home" element={<Home />} /> {/* 리디렉션 기능 추가 */}
+            {/* <Route path="/about" element={<About />} /> */}
+            <Route path="/about" element={<About title={'여우와 늙다리들'} />} />
+            {/* <Route path="/members" element={<Members />} /> */}
+            <Route path="/members" element={<Members members={members} />} />
+            {/* <Route path="/songs" element={<SongList />} /> */}
+            {/* <Route path="/songs" element={<SongList songs={songs} />} /> */}
+            {/* <Route path="/songs/:id" element={<SongDetail songs={songs} />} /> */}
+            {/* <Route path="/songs" element={<SongList songs={songs} />}>
+              <Route path=":id" element={<Player songs={songs} />} />
+            </Route> */}
+            {/* <Route path="/songs" element={<SongList songs={songs} />}>
+              <Route index element={<SongIndex />} />
+              <Route path=":id" element={<Player songs={songs} />} />
+            </Route> */}
+            <Route path="/songs" element={<SongList songs={songs} />}>
+              <Route index element={<SongIndex />} />
+              <Route path=":id" element={<Player />} /> {/* 속성을 전달하지 않도록 수정 */}
+            </Route>
+            <Route path="*" element={<NotFound />} /> {/* 404 라우트 */}
+          </Routes>
+        </div>
+      </Router>
+    </React.Suspense>
   );
-};
+}
 
 export default App;

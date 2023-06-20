@@ -1751,3 +1751,303 @@ export default Header;
 <img src="img/navlink.jpg" width="750" height="250"> <br>
 <img src="img/navlink_2.jpg" width="750" height="450"> <br>
 ▶ 브라우저 화면에서 확인하면 현재 요청과 매칭되는 메뉴가 NavLink의 스타일로 인해 메뉴 스타일이 다르게 나타난다. <br>
+
+
+- 리액트 라우터와 레이지 로딩 기법 <br>
+    - 레이지 로딩이란? <br>
+    ```
+    SPA는 index.html 파일 하나와 다수의 자바스크립트 코드, 그리고 CSS 파일로 구성된다. 
+    하지만 이러한 구성 때문에 SPA에는 약간의 문제점이 있습니다. 리액트 라우터를 적용한 
+    수백에서 수천 개의 화면과 컴포넌트로 구성된 애플리케이션이라면 다음처럼 작동할 것이다. 
+    ```
+
+    [SPA에서 첫 화면을 렌더링하는 과정] <br>
+    ||||
+    |:---:|:---:|:---:|
+    |**브라우저**||**웹 서버**|
+    |③ /경로의 컴포넌트만 렌더링<br>④ /about으로 내비게이션<br>⑤ /about을 라우팅하여 컴포넌트 렌더링|① /경로 요청<br>─────────────▷<br>◁─────────────<br> ② 모두 응답|<br>──────────<br>index.html<br>──────────<br>하나의 .js 파일<br>──────────<br> …|
+    ||||
+
+    ```
+    수백, 수천 개의 컴포넌트를 작성할 때 만들어진 타입스크립트 파일은 모두 빌드 과정을 
+    거쳐서 하나 또는 몇 개의 .js 파일로 빌드된다. 빌드된 파일은 모든 컴포넌트를 묶은 것이므로 
+    파일의 크기도 클 것으로 예상할 수 있다.
+    ```
+    ```
+    빌드된 파일들을 웹 서버에 배포한 경우 사용자가 첫 화면을 로딩하는 과정은 위 표와 같으며, 
+    간단한 설명은 다음과 같다.
+
+
+    ① 사용자는 / 경로로 웹 서버에 요청 정보를 전송한다.
+    
+    ② 웹 서버는 index.html과 필요한 모든 산출물(.js 파일 포함)을 브라우저로 응답한다.
+
+    ③ 브라우저에서는 / 경로의 첫 화면만 렌더링한다.
+
+    ④, ⑤ 사용자가 /about 경로를 내비게이션하더라도 웹 서버에 요청하지 않는다.
+    이미 다운로드한 .js파일의 컴포넌틀를 이용해 브라우저에서 렌더링한다.
+    ```
+    브라우저는 첫 화면을 로딩하기 위해 위 표의 ②단계에서 첫 화면뿐만 아니라 모든 화면을 위한 .js 파일을 로딩한다. 이때 지연 시간이 발생해서 사용자는 첫 화면을 보기까지 기다리는 시간이 길어지는데, 이 문제를 해결하는 방법 중 하나가 `레이지 로딩(lazy loading)`기법이다. <br>
+    **`레이지 로딩`은 리액트 애플리케이션의 수많은 화면과 컴포넌트 코드를 적절히 구분하여 화면, 컴포넌트 그룹 단위로 여러 개의 `청크(chunk)`라 부르는 .js 파일로 빌드하고 특정 컴포넌트가 필요한 시점에 서버에 요청해서 청크 파일을 응답받아 렌더링하는 방법이다.** <br>
+
+    [레이지 로딩 기법] <br>
+    ||||
+    |:---:|:---:|:---:|
+    |브라우저||웹 서버|
+    |③ / 경로의 컴포넌트 렌더링<br>④ /about으로 내비게이션<br>⑤ /about 라우팅을 위한 .js파일 요청<br> ⑧ /about 경로의 컴포넌트 렌더링|① / 경로 요청<br>─────────────▷<br>◁─────────────<br>②index.html + home.js 응답<br><br>⑥ about.js 요청<br>─────────────▷<br>◁─────────────<br>⑦ about.js 응답|──────────<br>index.html<br>──────────<br>경로별, 컴포넌트<br>단위로 빌드된<br>.js 파일들<br>- home.js<br>- about.js<br>- members.js<br>- songs.js<br>──────────|
+    ||||
+
+    ```
+    위 표의 표현된 레이지 로딩 기법을 이용한 화면 요청 과정을 살펴보면 다음과 같다.
+
+
+    ① /경로의 첫 화면을 요청한다.
+
+    ②, ③ 웹 서버는 / 경로의 화면에 필요한 index.html과 home.js 파일만을 응답한다.
+
+    ④ 브라우저 화면에서 /about 경로로 내비게이션한다.
+
+    ⑤, ⑥ /about 화면 생성에 필요한 청크(about.js) 파일을 웹 서버에 요청한다.
+
+    ⑦ 웹 서버는 청크(about.js) 파일을 응답한다.
+
+    ⑧ 브라우저에서 /about 경로의 화면을 렌더링한다.
+    ```
+    즉, `레이지 로딩 기법`의 핵심은 특정 화면이 필요할 때 관련된 컴포넌트를 포함하고 있는 .js 파일을 웹 서버에 요청하여 받아오는 것이다. <br>
+    이 방법을 사용하면 애플리케이션이 수많은 컴포넌트를 포함하더라도 첫 화면을 요청할 때는 작은 크기의 청크 파일을 요청하고 응답받으므로 **사용자에게 첫 화면을 더 신속하게 보여줄 수 있다.** <br>
+
+    - 레이지 로딩 적용 방법 <br>
+    `레이지 로딩`을 적용하려면 컴포넌트의 임포트를 필요한 시점에 '비동기'로 수행할 수 있어야 한다. 이를 위해서 **React.lazy() 함수**와 **import 함수**를 이용한다. <br>
+    ```javascript
+    // 기존의 정적 import 방법
+    
+    import Home from './Home'
+    ```
+    ```javascript
+    // React.lazy()와 import 함수 사용
+
+    const Home = React.lazy(() => import("./Home"));
+    // 애플리케이션을 실행할 때 'Home' 컴포넌트가 필요한 시점이 되면
+    // React.lazy()에 등록된 함수가 실행되면서 비동기로 컴포넌트를 임포트 해온다.
+    ```
+    ```javascript
+    // webpackChunkName 지정
+
+    const Home = React.lazy(() => import(/* webpackChunkName:"home" */ "./Home"));
+    const Blog = React.lazy(() => import(/* webpackChunkName:"home" */ "./Blog"));
+    // webpackChunkName 주석은 이름이 같은 것끼리 모아서 청크 파일을 생성하며,
+    // 생성된 청크 파일의 이름은 home.f4c1eac5.js와 유사한 형태이다.
+
+    // webpackChunkName은 함께 사용되는 컴포넌트를 모아서 하나의 청크로 생성해주는 고마운 기능이다.
+
+    // 참고로 이 기능은 코드를 여러 개의 조각으로 분할해준다고 해서 '코드 스플리팅(code splitting)'이라고 부른다.
+    ```
+
+    ```
+    [webpackChunkName을 사용하려면 알아둬야 할 사항]
+
+    webpackChunkName은 이름에서 알 수 있듯이 webpack이라는 빌드 시스템이 지원하는 기능이다.
+    CRA(create-react-app) 도구를 이용해 리액트 프로젝트를 생성했다면 webpack이 기본으로 지원되므로
+    별도의 설정 없이 webpackChunkName 기능을 사용할 수 있지만, Vite로 생성된 프로젝트인 경우는
+    별도의 설정이 필요하다.
+    ```
+    1. Vite에서 사용할 수 있도록 다음 명령어를 이용해 webpackChunkName 플러그인을 설치
+        ```
+        npm install -D vite-plugin-webpackchunkname
+        ```
+    2. vite.config.js에 다음과 같은 vite-plugin-webpackchunkname 플러그인의 설정을 추가한다.
+        ```javascript
+        import { defineConfig } from 'vite'
+        import react from '@vitejs/plugin-react'
+        import { manualChunksPlugin } from 'vtie-plugin-webpackchunkname'
+
+        // https://vitejs.dev/config/
+        export default defineConfig({
+            plugins: [ react(), manualChunksPlugin() ],
+        });
+        ```
+    
+    - `Suspense 컴포넌트` <br>
+    '청크' 파일을 필요할 때 로딩하다 보면 실행 중에 약간의 지연 시간이 발생할 수 있다. 지연 시간이 길어진다면 사용자에게 로딩 중임을 나타내는 화면을 보여주는 것이 좋다. 이런 화면을 `fallback UI`라고 부르며 이 기능을 손쉽게 구현할 수 있도록 도와주는 컴포넌트가 `Suspense 컴포넌트`이다. <br>
+
+        ```javascript
+        // fallback 속성에는 발생한 지연 시간 동안에 보여줄 컴포넌트를 지정할 수 있다.
+        
+        // 1) 특정 컴포넌트를 감싸줄 수 있다.
+        <React.Suspense fallback={<Loading />}>
+            <TestComponent />
+        </React.Suspense>
+
+        // 2) <Router /> 컴포넌트도 감싸줄 수 있다.
+        <React.Suspense fallback={<Loading />}>
+            <Router>
+                …
+            </Router>
+        <React.Suspense>
+        ```
+        `Suspense 컴포넌트`는 일반적인 컴포넌트도 처리할 수 있지만 &lt;Router /&gt; 컴포넌트를 자식 컴포넌트로 포함할 수 있다. 이 경우에 '라우트' 경로가 바뀔 때마다 필요한 청크 파일을 **레이지 로딩**하게 된다. <br> 
+
+    - 레이지 로딩 적용하기 <br>
+        ```
+        npm install react-spinners p-min-delay
+        npm install -D vite-plugin-webpackchunkname
+        ```
+        - `vite-plugin-webpackchunkname` 패키지는 개발하고 빌드할 때만 필요하므로 -D 옵션을 지정해 **개발 의존성**으로 설치한다. <br>
+        - `react-spinners`는 다음 그림과 같이 지연 시간동안 보여줄 컴포넌트를 제공한다. <br>
+        <img src="img/react_spinners.jpg" width="750" height="450"> <br>
+            ```
+            [React-Spinners 컴포넌트]
+            
+            https://www.davidhu.io/react-spinners/
+            ```
+        - `p-min-delay` 패키지는 의도적으로 지연 시간을 발생시키는 기능을 제공하는 라이브러리이다. <br>
+    
+    ```
+    테스트 환경에서는 사실상 지연 시간이 발생하지 않으므로 fallback UI를 확인하려면
+    의도적으로 지연 시간을 발생시켜야 한다.
+
+    하지만 의도적으로 지연 시간은 테스트를 할 때만 적용하고, 
+    실제 코드에서는 전혀 필요하지 않는다.
+    ```
+
+◾ 09-31 : vite.config.js 변경 → vite-plugin-webpackchunkname에 대한 설정을 추가 <br>
+```javascript
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import { manualChunksPlugin } from 'vite-plugin-webpackchunkname'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react(), manualChunksPlugin()],
+})
+```
+
+◾ 09-32 : src/components/Loading.tsx → ScaleLoader를 추가 <br>
+```
+[ScaleLoader 사용 방법]
+
+https://www.davidhu.io/react-spinners/
+```
+```javascript
+import React from 'react'
+import { ScaleLoader } from 'react-spinners'
+
+const Loading = () => {
+    return (
+        <div className="w-100 h-75 position-fixed">
+            <div className="row w-100 h-100 justify-content-center align-items-center">
+                <div className="col-6 text-center">
+                    <h3>Loading</h3>
+                    <ScaleLoader height="40px" width="6px" radius="2px" margin="2px" />
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Loading;
+```
+
+◾ 09-33 : src/App.tsx 변경 → 요청 경로에 따라 화면이 전환될 때 사용되는 컴포넌트들을 React.lazy()로 레이지 로딩 <br>
+
+```javascript
+import React from 'react'
+import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import Header from './components/Header'
+import pMinDelay from 'p-min-delay' // 추가
+import Loading from './components/Loading' // 추가
+// import Home from './pages/Home'
+// import About from './pages/About'
+// import SongList from './pages/SongList'
+// import Members from './pages/Members'
+// import Player from './pages/songs/Player'
+// import SongIndex from './pages/songs/Index'
+// import NotFound from './components/NotFound'
+
+const Home = React.lazy(() =>pMinDelay(import("./pages/Home"), 1000));
+const About = React.lazy(() =>pMinDelay(import("./pages/About"), 1000));
+const SongList = React.lazy(() =>pMinDelay(import("./pages/SongList"), 1000));
+const Members = React.lazy(() =>pMinDelay(import("./pages/Members"), 1000));
+const Player = React.lazy(() =>pMinDelay(import("./pages/songs/Player"), 1000));
+const SongIndex = React.lazy(() =>pMinDelay(import("./pages/songs/Index"), 1000));
+const NotFound = React.lazy(() =>pMinDelay(import("./components/NotFound"), 1000));
+
+…
+
+const App = () => {
+    …
+    return (
+    <React.Suspense fallback={<Loading />}>
+      <Router>
+        <div className="container">
+          <Header />
+          <Routes>
+            <Route path="/" element={<Navigate to="/home" /> } />
+            <Route path="/home" element={<Home />} />
+            <Route path="/about" element={<About title={'여우와 늙다리들'} />} />
+            <Route path="/members" element={<Members members={members} />} />
+            <Route path="/songs" element={<SongList songs={songs} />}>
+              <Route index element={<SongIndex />} />
+              <Route path=":id" element={<Player />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+      </Router>
+    </React.Suspense>
+  );
+}
+
+export default App;
+```
+▶ &lt;Router /&gt;를 Suspense 컴포넌트로 감싸면서 **fallback UI**로 Loading 컴포넌트를 렌더링하도록 지정 <br>
+
+이 예제에서는 webpackChunkName을 지정하지 않았다. 만일 지정하고 싶다면 다음과 같이 import() 함수를 변경 <br>
+```javascript
+const Home = React.lazy(() => pMinDelay(import("./pages/Home"), 1000));
+
+// 앞의 코드에서 import("./pages/Home")을 다음과 같이 변경해 chunkName을 지정한다.
+// 같은 webpackChunkName을 지정한 컴포넌트들을 하나의 청크 파일로 묶어서 빌드된다.
+import( /* webpackChunkName: "home" */ "./pages/Home")
+```
+
+<img src="img/loading.jpg" width="900" height="300"> <br>
+▶ 레이지 로딩 중 나타나는 fallback UI <br>
+
+<img src="img/npm_run_build.jpg" width="600" height="250"> <br>
+▶ npm run build 명령으로 dist 디렉터리에 빌드된 청크 파일들을 확인 <br> 
+```
+코드 스플리팅(code splitting)을 하려면 먼저 'Vendor' 설정을 해주어야 한다. 
+프로젝트에서 전역적으로 사용되는 라이브러리들을 분리시켜 줄건데, 이를 Vendor 파일이라고 부른다.
+```
+
+<br>
+
+```
+'리액트 라우터'는 리액트를 이용해 SPA를 개발하기 위한 중요한 라이브러리이다.
+SPA는 단 하나의 HTML 페이지로 수많은 화면을 처리해야 해서 리액트 라우터와 같이 요청 경로에 따라
+화면을 쉽게 전환할 수 있는 기능을 제공하는 라이브러리가 꼭 필요하다.
+
+리액트 라우터가 제공하는 Router, Routes, Route 컴포넌트를 조합해 요청 경로에 따라 렌더링할
+컴포넌트를 지정할 수 있다. '중첩 라우트'를 이용하면 손쉽게 요청된 URI 경로에 의해 중첩된
+컴포넌트 트리를 생성할 수 있다. 중첩된 자식 라우트에 의해 컴포넌트가 렌더링되려면 부모 라우트에
+`Outlet` 컴포넌트를 배치해야 한다는 것을 잊지 말아야 한다.
+
+라우팅된 자식 컴포넌트로 '동적인 값'을 전달하기 위해서는 '속성'을 이용할 수 있다. 
+<Route /> 컴포넌트의 element 속성으로 렌더링할 컴포넌트를 지정할 때 속성을 전달하면 된다.
+URI 경로의 파라미터를 전달할 때는 <Route /> 컴포넌트의 path 속성을 /orders/:id와 같이 콜론(:)
+기호와 함께 파라미터 이름을 지정한다. 이 위치에 전달된 URI 파라미터는 자식 컴포넌트에서
+useParams 훅을 사용해 파라미터 값에 접근할 수 있다. 
+
+`BrowserRouter`를 사용할 때는 웹 서버가 'fallback UI'를 지원해야 하며, 존재하지 않는 경로로
+요청했을 때 보여줄 404 라우트를 반드시 설정하도록 한다.
+
+대규모 애플리케이션을 개발할 때는 '레이지 로딩 기법' 적용을 고려해 본다.
+프로젝트를 빌드할 때 컴포넌트 또는 경로 단위로 묶어서 여러 개의 .js 파일 조각을 생성할 수 있으며
+React.lazy(), import() 함수를 이용해 컴포넌트가 필요한 시점에 로딩할 수 있다.
+이 기법을 사용하면 대규모 애플리케이션이라도 초기 화면을 더 빠르게 로딩할 수 있다.
+
+리액트 라우터는 많은 컴포넌트와 화면으로 구성된 대규모 리액트 애플리케이션을 개발할 때
+반드시 사용하는 중요한 라이브러리이므로 반드시 숙지하도록 한다.
+```

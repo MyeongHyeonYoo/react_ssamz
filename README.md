@@ -258,3 +258,6 @@
 ◾ 09-28 : src/components/NotFound.tsx → location 객체를 이용 <br>
 ◾ 09-29 : src/App.tsx 변경 → &lt;Route /&gt; 컴포넌트 설정 <br>
 ◾ 09-30 : src/components/Header.tsx 변경 → NavLink 사용 <br>
+◾ 09-31 : vite.config.js 변경 → vite-plugin-webpackchunkname에 대한 설정을 추가 <br>
+◾ 09-32 : src/components/Loading.tsx → ScaleLoader를 추가 <br>
+◾ 09-33 : src/App.tsx 변경 → 요청 경로에 따라 화면이 전환될 때 사용되는 컴포넌트들을 React.lazy()로 레이지 로딩 <br>
